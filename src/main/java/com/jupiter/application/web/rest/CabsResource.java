@@ -40,7 +40,6 @@ public class CabsResource {
         log.debug(" Requested cab details");
         return new ResponseEntity<CabDTO>(new CabDTO(), HttpStatus.OK);
 
-
     }
 
     @RequestMapping(value = "/cabs",
