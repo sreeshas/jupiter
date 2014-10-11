@@ -20,19 +20,6 @@ public interface CabRepository extends MongoRepository<Cab, Long> {
     @Query(value="{ 'id' : ?0 }", fields="{ 'latitude' : 1, 'longitude' : 1}")
     Cab findById(Long id);
 
-    void createCab(Cab cab);
-
-    void updateCab(Cab cab);
-
-    boolean isExists(Cab cab);
-
-    void deleteCab(Cab cab);
-
-    List<Cab> search(String latitude, String longitude, int limit, int radius);
-
-    List<Cab> findByLocationWithin(Circle circle);
-
-    List<Cab> findByLocationNear(Point location, Distance distance);
 
 
 }

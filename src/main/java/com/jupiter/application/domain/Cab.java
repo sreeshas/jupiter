@@ -45,4 +45,28 @@ public class Cab extends AbstractAuditingEntity implements Serializable {
     public int hashCode() {
         return (id != +0.0f ? Float.floatToIntBits(id) : 0);
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public float getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
+
+    public float getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(float longitude) {
+        this.longitude = longitude;
+    }
 }

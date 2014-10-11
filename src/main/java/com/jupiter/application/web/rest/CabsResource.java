@@ -1,5 +1,6 @@
 package com.jupiter.application.web.rest;
 
+import com.jupiter.application.service.CabService;
 import com.jupiter.application.web.rest.dto.CabDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.inject.Inject;
 import javax.xml.ws.Response;
 
 /**
@@ -19,15 +21,20 @@ public class CabsResource {
 
     private final Logger log = LoggerFactory.getLogger(CabsResource.class);
 
+    @Inject
+    private CabService cabService;
+
     /**
      * PUT  /cabs/(cab_id) -> register the user.
      */
     @RequestMapping(value = "/cabs/{cab_id}",
             method = RequestMethod.PUT)
-    public ResponseEntity<?> createOrUpdateCabLocation(@PathVariable float cab_id,
+    public ResponseEntity<?> createOrUpdateCabLocation(@PathVariable long cab_id,
                                           @RequestParam float latitude,
                                           @RequestParam float longitude ){
-        log.debug(" Requested to create a user");
+
+        cabService.createCab(cab_id, latitude, longitude);
+        log.debug(" Requested to create new Cab");
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
