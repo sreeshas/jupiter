@@ -16,6 +16,7 @@ import javax.xml.ws.Response;
  * Rest controller for managing cabs.
  */
 
+
 @RestController
 public class CabsResource {
 
@@ -29,11 +30,9 @@ public class CabsResource {
      */
     @RequestMapping(value = "/cabs/{cab_id}",
             method = RequestMethod.PUT)
-    public ResponseEntity<?> createOrUpdateCabLocation(@PathVariable long cab_id,
-                                          @RequestParam float latitude,
-                                          @RequestParam float longitude ){
+    public ResponseEntity<?> createOrUpdateCabLocation( CabDTO cabDTO){
 
-        cabService.createCab(cab_id, latitude, longitude);
+        //cabService.createCab(cab_id, latitude, longitude);
         log.debug(" Requested to create new Cab");
         return new ResponseEntity<>(HttpStatus.OK);
 

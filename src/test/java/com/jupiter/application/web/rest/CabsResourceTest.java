@@ -1,5 +1,6 @@
 package com.jupiter.application.web.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jupiter.application.Application;
 import com.jupiter.application.config.MongoConfiguration;
 import com.jupiter.application.domain.Cab;
@@ -10,6 +11,7 @@ import com.jupiter.application.repository.UserRepository;
 
 import com.jupiter.application.security.AuthoritiesConstants;
 import com.jupiter.application.service.CabService;
+import com.jupiter.application.web.rest.dto.CabDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,8 +28,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.inject.Inject;
 
+import java.net.URI;
+import java.net.URL;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -61,15 +67,16 @@ public class CabsResourceTest {
 
     @Test
     public void testCreatingCab() throws Exception {
-        Cab cab = new Cab();
+        CabDTO cab = new CabDTO();
         cab.setLongitude(37.37f);
         cab.setLatitude(34.34f);
-        cab.setId(1234);
+        cab.setId(Long.parseLong("1234"));
 
-        when(cabService.createCab(1234, 37.37f, 34.34f)).thenReturn(cab);
 
-//        restCabMockMvc.perform(get("/cabs/1234").accept(MediaType.TEXT_PLAIN))
-//                .andExpect(status().isOk());
+        restCabMockMvc.perform(put("/cabs/1234")
+                .accept(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(cab)))
+                .andExpect(status().isOk());
     }
 
     public void testUpdatingCab() throws Exception {
@@ -89,6 +96,10 @@ public class CabsResourceTest {
     }
 
     public void testDeleteCab() throws Exception {
+
+    }
+
+    public void testGetCabDetails() throws Exception {
 
     }
 }
