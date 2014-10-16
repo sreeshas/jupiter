@@ -44,7 +44,11 @@ public class CabsResource {
     public ResponseEntity<CabDTO> getCabDetails(@PathVariable float cab_id) {
 
         log.debug(" Requested cab details");
-        return new ResponseEntity<CabDTO>(new CabDTO(), HttpStatus.OK);
+        CabDTO cabDTO = new CabDTO();
+        cabDTO.setId(12345L);
+        cabDTO.setLongitude(33.23F);
+        cabDTO.setLatitude(34.23F);
+        return new ResponseEntity<CabDTO>(cabDTO, HttpStatus.OK);
 
     }
 
