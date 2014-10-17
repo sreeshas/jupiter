@@ -50,8 +50,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(MongoConfiguration.class)
 public class CabsResourceTest {
 
-    @Inject
-    private CabRepository cabRepository;
 
     private MockMvc restCabMockMvc;
 

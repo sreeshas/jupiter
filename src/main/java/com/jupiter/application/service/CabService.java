@@ -35,27 +35,47 @@ public class CabService {
     @Inject
     private CabRepository cabRepository;
 
+    /**
+     * Creates cab if it does not exist. if it exists, updates it.
+     * @param id
+     * @param latitude
+     * @param longitude
+     * @return
+     */
     public Cab createCab(long id, float latitude, float longitude) {
-        Cab newCab = new Cab();
-        newCab.setId(id);
-        newCab.setLatitude(latitude);
-        newCab.setLongitude(longitude);
-        cabRepository.save(newCab);
-        log.debug("Created Information for Cab: {}", newCab);
-        return newCab;
-    }
 
-    public void updateCab(long id, float latitude, float longitude) {
+        //check if the cab exists. if not create it.
+        if (!cabRepository.exists(id)) {
 
+            Cab newCab = new Cab();
+            newCab.setId(id);
+            newCab.setLatitude(latitude);
+            newCab.setLongitude(longitude);
+            log.debug("Creating new cab with id " + newCab.getId());
+            return cabRepository.save(newCab);
+        }
+        //Cab already exists. Update it.
         Cab existingCab = cabRepository.findOne(id);
         existingCab.setLatitude(latitude);
         existingCab.setLongitude(longitude);
-        cabRepository.save(existingCab);
-        log.debug("Changed Information for Cab: {}", existingCab);
+        log.debug("Updating cab with id " + existingCab.getId());
+        return cabRepository.save(existingCab);
     }
 
+    /**
+     * returns false if cab not found, else returns true.
+     * @param id of the cab to be deleted.
+     */
+    public boolean deleteCab(long id) {
 
-
+        if (cabRepository.exists(id)) {
+            log.debug("Deleting Cab with id "+id );
+            cabRepository.delete(id);
+            return true;
+        }
+        log.debug("Cannot Delete. Cab "+id+" not found");
+        return false;
+    }
 
 
 
