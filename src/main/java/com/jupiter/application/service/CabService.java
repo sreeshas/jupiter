@@ -77,6 +77,15 @@ public class CabService {
         return false;
     }
 
+    public Cab getCab(long id) {
+        if (!cabRepository.exists(id)) {
+            return null;
+        }
+        return cabRepository.findById(id);
+    }
+
+
+
 
 
 }

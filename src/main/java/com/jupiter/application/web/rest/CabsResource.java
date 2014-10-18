@@ -1,5 +1,7 @@
 package com.jupiter.application.web.rest;
 
+import com.jupiter.application.Application;
+import com.jupiter.application.domain.Cab;
 import com.jupiter.application.service.CabService;
 import com.jupiter.application.web.rest.dto.CabDTO;
 import org.slf4j.Logger;
@@ -10,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.Response;
 
 /**
@@ -30,10 +34,10 @@ public class CabsResource {
      */
     @RequestMapping(value = "/cabs/{cab_id}",
             method = RequestMethod.PUT)
-    public ResponseEntity<?> createOrUpdateCabLocation( CabDTO cabDTO){
+    public ResponseEntity<?> createOrUpdateCabLocation( @PathVariable long cab_id, @RequestBody CabDTO cabDTO){
 
-        //cabService.createCab(cab_id, latitude, longitude);
         log.debug(" Requested to create new Cab");
+        cabService.createCab(cabDTO.getId(), cabDTO.getLatitude(), cabDTO.getLongitude());
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
@@ -41,14 +45,11 @@ public class CabsResource {
     @RequestMapping(value = "/cabs/{cab_id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CabDTO> getCabDetails(@PathVariable float cab_id) {
+    public ResponseEntity<Cab> getCabDetails(@PathVariable long cab_id) {
 
         log.debug(" Requested cab details");
-        CabDTO cabDTO = new CabDTO();
-        cabDTO.setId(12345L);
-        cabDTO.setLongitude(33.23F);
-        cabDTO.setLatitude(34.23F);
-        return new ResponseEntity<CabDTO>(cabDTO, HttpStatus.OK);
+        Cab cab = cabService.getCab(cab_id);
+        return new ResponseEntity<Cab>(cab, HttpStatus.OK);
 
     }
 
@@ -70,8 +71,9 @@ public class CabsResource {
      */
     @RequestMapping(value = "/cabs/{cab_id}",
             method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteCab(@PathVariable float cab_id){
+    public ResponseEntity<?> deleteCab(@PathVariable long cab_id){
         log.debug(" Requested to delete a cab");
+        cabService.deleteCab(cab_id);
         return new ResponseEntity<>(HttpStatus.OK);
 
     }

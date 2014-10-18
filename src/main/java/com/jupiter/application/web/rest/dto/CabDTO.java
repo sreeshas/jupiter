@@ -1,19 +1,24 @@
 package com.jupiter.application.web.rest.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jupiter.application.domain.Cab;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * Created by sreenidhisreesha on 10/6/14.
  */
 public class CabDTO {
 
+
     @NotNull
     private Long id;
 
+
     @NotNull
     private float latitude;
+
 
     @NotNull
     private float longitude;
@@ -22,11 +27,12 @@ public class CabDTO {
 
     }
 
-    public CabDTO(long id, float latitude, float longitude) {
+    public CabDTO(Long id, float latitude, float longitude) {
         this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
 
     @Override
     public String toString() {
