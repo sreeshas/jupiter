@@ -63,13 +63,13 @@ public class CabsResourceTest {
     @Mock
     private CabService cabService;
 
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         CabsResource cabsResource = new CabsResource();
         ReflectionTestUtils.setField(cabsResource, "cabService", cabService);
-        this.restCabMockMvc = MockMvcBuilders.standaloneSetup(cabsResource)
-                                .setMessageConverters(new MappingJackson2HttpMessageConverter()).build();
+        this.restCabMockMvc = MockMvcBuilders.standaloneSetup(cabsResource).build();
     }
 
     @Test
@@ -89,8 +89,6 @@ public class CabsResourceTest {
                 .andExpect(status().isOk());
         verify(cabService).createCab(anyLong(), anyFloat(), anyFloat());
     }
-
-
 
     @Test
     public void testDeleteCab() throws Exception {
@@ -118,20 +116,5 @@ public class CabsResourceTest {
         verify(cabService).getCab(anyLong());
 
     }
-
-    public void testUpdatingCab() throws Exception {
-
-    }
-
-
-
-    public void testUnknownCabDetails() throws Exception {
-
-    }
-
-    public void testSearch() throws Exception {
-
-    }
-
 
 }

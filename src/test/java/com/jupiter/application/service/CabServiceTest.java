@@ -101,11 +101,26 @@ public class CabServiceTest {
         verify(cabRepository).exists(anyLong());
     }
 
-    public void testFindCab(){
-
+    @Test
+    public void testGetExistingCabDetails(){
+        Cab testCab = new Cab();
+        testCab.setId(1234L);
+        testCab.setLatitude(12.21F);
+        testCab.setLongitude(13.31F);
+        when(cabRepository.exists(anyLong())).thenReturn(true);
+        when(cabRepository.findById(anyLong())).thenReturn(testCab);
+        Cab resultCab = cabService.getCab(1234);
+        assertEquals(testCab, resultCab);
+        verify(cabRepository).findById(anyLong());
+        assert(resultCab.equals(testCab));
     }
 
-    public void testSearchCabs() {
-
+    @Test
+    public void testGetNonExistingCabDetails(){
+        when(cabRepository.exists(anyLong())).thenReturn(false);
+        Cab resultCab = cabService.getCab(1234);
+        assertEquals(resultCab, null);
+        verify(cabRepository).exists(anyLong());
     }
+
 }
