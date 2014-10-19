@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import javax.xml.ws.Response;
 
 /**
@@ -34,7 +35,7 @@ public class CabsResource {
      */
     @RequestMapping(value = "/cabs/{cab_id}",
             method = RequestMethod.PUT)
-    public ResponseEntity<?> createOrUpdateCabLocation( @PathVariable long cab_id, @RequestBody CabDTO cabDTO){
+    public ResponseEntity<?> createOrUpdateCabLocation( @PathVariable long cab_id, @Valid @RequestBody CabDTO cabDTO){
 
         log.debug(" Requested to create new Cab");
         cabService.createCab(cabDTO.getId(), cabDTO.getLatitude(), cabDTO.getLongitude());
@@ -45,7 +46,7 @@ public class CabsResource {
     @RequestMapping(value = "/cabs/{cab_id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Cab> getCabDetails(@PathVariable long cab_id) {
+    public ResponseEntity<Cab> getCabDetails(@Valid @PathVariable long cab_id) {
 
         log.debug(" Requested cab details");
         Cab cab = cabService.getCab(cab_id);
@@ -56,10 +57,10 @@ public class CabsResource {
     @RequestMapping(value = "/cabs",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CabDTO> search(@RequestParam float latitude,
-                                         @RequestParam float longitude,
-                                         @RequestParam (required = false, defaultValue = "8") int radius,
-                                         @RequestParam (required = false) float limit) {
+    public ResponseEntity<CabDTO> search(@Valid @RequestParam float latitude,
+                                         @Valid @RequestParam float longitude,
+                                         @Valid @RequestParam (required = false, defaultValue = "8") int radius,
+                                         @Valid @RequestParam (required = false) float limit) {
 
         log.debug(" Search for nearest cab details");
         return new ResponseEntity<CabDTO>(new CabDTO(), HttpStatus.OK);
@@ -71,7 +72,7 @@ public class CabsResource {
      */
     @RequestMapping(value = "/cabs/{cab_id}",
             method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteCab(@PathVariable long cab_id){
+    public ResponseEntity<?> deleteCab(@Valid @PathVariable long cab_id){
         log.debug(" Requested to delete a cab");
         cabService.deleteCab(cab_id);
         return new ResponseEntity<>(HttpStatus.OK);

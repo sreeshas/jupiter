@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jupiter.application.domain.Cab;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 /**
@@ -12,15 +13,18 @@ import java.io.Serializable;
 public class CabDTO {
 
 
-    @NotNull
+    @NotNull(message = "id cannot be null")
+    @Pattern(regexp="[0-9]*", message = "specified id is invalid")
     private Long id;
 
 
-    @NotNull
+    @NotNull(message = "latitude field is required")
+    @Pattern(regexp ="^-?([1-8]?[1-9]|[1-9]0)\\.{1}\\d{1,6}", message="Invalid latitude specified")
     private float latitude;
 
 
-    @NotNull
+    @NotNull(message = "longitude field is required")
+    @Pattern(regexp="^-?([1]?[1-7][1-9]|[1]?[1-8][0]|[1-9]?[0-9])\\.{1}\\d{1,6}", message="Invalid longitude specified")
     private float longitude;
 
     public CabDTO() {
