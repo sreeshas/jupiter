@@ -4,11 +4,13 @@ import com.jupiter.application.Application;
 import com.jupiter.application.domain.Cab;
 import com.jupiter.application.service.CabService;
 import com.jupiter.application.web.rest.dto.CabDTO;
+import com.jupiter.application.web.rest.dto.CabDTOValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -30,6 +32,11 @@ public class CabsResource {
     @Inject
     private CabService cabService;
 
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.setValidator(new CabDTOValidator());
+    }
+
     /**
      * PUT  /cabs/(cab_id) -> register the user.
      */
@@ -38,7 +45,7 @@ public class CabsResource {
     public ResponseEntity<?> createOrUpdateCabLocation( @PathVariable long cab_id, @Valid @RequestBody CabDTO cabDTO){
 
         log.debug(" Requested to create new Cab");
-        cabService.createCab(cabDTO.getId(), cabDTO.getLatitude(), cabDTO.getLongitude());
+        cabService.createCab(cab_id, cabDTO.getLatitude(), cabDTO.getLongitude());
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
