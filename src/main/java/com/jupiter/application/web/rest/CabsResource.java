@@ -67,7 +67,7 @@ public class CabsResource {
     public ResponseEntity<CabDTO> search(@Valid @RequestParam float latitude,
                                          @Valid @RequestParam float longitude,
                                          @Valid @RequestParam (required = false, defaultValue = "8") int radius,
-                                         @Valid @RequestParam (required = false) float limit) {
+                                         @Valid @RequestParam (required = false) int limit) {
 
         log.debug(" Search for nearest cab details");
         return new ResponseEntity<CabDTO>(new CabDTO(), HttpStatus.OK);
