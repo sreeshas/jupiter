@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.xml.ws.Response;
+import java.util.IllegalFormatException;
 
 /**
  * Rest controller for managing cabs.
@@ -69,6 +70,16 @@ public class CabsResource {
                                          @Valid @RequestParam (required = false, defaultValue = "8") int radius,
                                          @Valid @RequestParam (required = false) int limit) {
 
+        //TODO: figure out a better way to validate primitive types
+
+        // Validate inputs
+        boolean isLatitudeValid = CabDTOValidator.isLatitudeValid(latitude);
+        boolean isLongitudeValid = CabDTOValidator.isLongitudeValid(longitude);
+        if (!(isLatitudeValid && isLongitudeValid)) {
+            throw new IllegalArgumentException();
+        }
+
+        //Perform query
         log.debug(" Search for nearest cab details");
         return new ResponseEntity<CabDTO>(new CabDTO(), HttpStatus.OK);
 

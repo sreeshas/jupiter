@@ -27,8 +27,8 @@ public class CabDTOValidator implements Validator {
      * -90.1 90.12345 91 -20.1234567 -90 90
      * @author Nick Floersch
      */
-    String latitudeRegEx = "^-?([1-8]?[0-9]\\.{1}\\d{1,6}$|90\\.{1}0{1,6}$)";
-    Pattern latPattern = Pattern.compile(latitudeRegEx);
+    static String latitudeRegEx = "^-?([1-8]?[0-9]\\.{1}\\d{1,6}$|90\\.{1}0{1,6}$)";
+    static Pattern latPattern = Pattern.compile(latitudeRegEx);
 
 
     /**
@@ -41,8 +41,8 @@ public class CabDTOValidator implements Validator {
      * @author Nick Floersch
      */
 
-    String longitudeRegEx = "^-?((([1]?[0-7][0-9]|[1-9]?[0-9])\\.{1}\\d{1,6}$)|[1]?[1-8][0]\\.{1}0{1,6}$)";
-    Pattern longPattern = Pattern.compile(longitudeRegEx);
+    static String longitudeRegEx = "^-?((([1]?[0-7][0-9]|[1-9]?[0-9])\\.{1}\\d{1,6}$)|[1]?[1-8][0]\\.{1}0{1,6}$)";
+    static Pattern longPattern = Pattern.compile(longitudeRegEx);
 
     @Override
     public void validate(Object o, Errors errors) {
@@ -64,4 +64,21 @@ public class CabDTOValidator implements Validator {
         }
 
     }
+
+    public static boolean isLatitudeValid(float latitude) {
+        Matcher latMatcher = latPattern.matcher(String.valueOf(latitude));
+        if (!latMatcher.matches()) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isLongitudeValid(float longitude) {
+        Matcher longMatcher = longPattern.matcher(String.valueOf(longitude));
+        if (!longMatcher.matches()) {
+            return false;
+        }
+        return true;
+    }
+
 }
