@@ -20,6 +20,10 @@ public interface CabRepository extends MongoRepository<Cab, Long> {
     @Query(value="{ 'id' : ?0 }", fields="{ 'latitude' : 1, 'longitude' : 1}")
     Cab findById(Long id);
 
+    @Query(value="{location :{ $nearSphere :{$geometry : {type : \"Point\", coordinates : [?1, ?0] },$maxDistance :?2 }}}", fields="{'location':0}")
+    List<Cab> search(float latitude, float longitude, int distance);
 
 
-}
+
+
+ }

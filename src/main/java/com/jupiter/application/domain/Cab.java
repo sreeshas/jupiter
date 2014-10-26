@@ -1,5 +1,6 @@
 package com.jupiter.application.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -11,8 +12,9 @@ import java.io.Serializable;
 /**
  * A cab.
  */
+//Skip AuditingEntity for now.
 @Document
-public class Cab extends AbstractAuditingEntity implements Serializable {
+public class Cab implements Serializable {
 
     @NotNull
     @Id
@@ -27,6 +29,23 @@ public class Cab extends AbstractAuditingEntity implements Serializable {
     @Field("longitude")
     @Indexed
     private float longitude;
+
+
+
+    @JsonIgnore
+    @Field("location")
+    private Location location;
+
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+
 
 
     @Override

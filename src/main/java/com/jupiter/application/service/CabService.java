@@ -1,9 +1,6 @@
 package com.jupiter.application.service;
 
-import com.jupiter.application.domain.Authority;
-import com.jupiter.application.domain.Cab;
-import com.jupiter.application.domain.PersistentToken;
-import com.jupiter.application.domain.User;
+import com.jupiter.application.domain.*;
 import com.jupiter.application.repository.AuthorityRepository;
 import com.jupiter.application.repository.CabRepository;
 import com.jupiter.application.repository.PersistentTokenRepository;
@@ -51,6 +48,8 @@ public class CabService {
             newCab.setId(id);
             newCab.setLatitude(latitude);
             newCab.setLongitude(longitude);
+            newCab.setLocation(new Location(latitude, longitude));
+
             log.debug("Creating new cab with id " + newCab.getId());
             return cabRepository.save(newCab);
         }
@@ -84,10 +83,11 @@ public class CabService {
         return cabRepository.findById(id);
     }
 
-
-
-
-
-
+    public List<Cab> search(float latitude, float longitude, int radius, int limit) {
+        //TODO: figure out how to use limit
+        // figure out a way to get distance metrics.
+        List<Cab> cabList = cabRepository.search(latitude, longitude, radius);
+        return cabList;
+    }
 
 }

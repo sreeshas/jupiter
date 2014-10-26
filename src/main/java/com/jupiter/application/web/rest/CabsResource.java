@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.xml.ws.Response;
 import java.util.IllegalFormatException;
+import java.util.List;
 
 /**
  * Rest controller for managing cabs.
@@ -65,7 +66,7 @@ public class CabsResource {
     @RequestMapping(value = "/cabs",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CabDTO> search(@Valid @RequestParam float latitude,
+    public ResponseEntity<List<CabDTO>> search(@Valid @RequestParam float latitude,
                                          @Valid @RequestParam float longitude,
                                          @Valid @RequestParam (required = false, defaultValue = "8") int radius,
                                          @Valid @RequestParam (required = false) int limit) {
@@ -78,10 +79,9 @@ public class CabsResource {
         if (!(isLatitudeValid && isLongitudeValid)) {
             throw new IllegalArgumentException();
         }
-
-        //Perform query
+        List<Cab> searchResults =  cabService.search(latitude, longitude, radius, limit);
         log.debug(" Search for nearest cab details");
-        return new ResponseEntity<CabDTO>(new CabDTO(), HttpStatus.OK);
+        return new ResponseEntity(searchResults, HttpStatus.OK);
 
     }
 
@@ -94,8 +94,5 @@ public class CabsResource {
         log.debug(" Requested to delete a cab");
         cabService.deleteCab(cab_id);
         return new ResponseEntity<>(HttpStatus.OK);
-
     }
-
-
 }
