@@ -68,7 +68,7 @@ public class CabsResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CabDTO>> search(@Valid @RequestParam float latitude,
                                          @Valid @RequestParam float longitude,
-                                         @Valid @RequestParam (required = false, defaultValue = "8") int radius,
+                                         @Valid @RequestParam (required = false, defaultValue = "8") float radius,
                                          @Valid @RequestParam (required = false) int limit) {
 
         //TODO: figure out a better way to validate primitive types

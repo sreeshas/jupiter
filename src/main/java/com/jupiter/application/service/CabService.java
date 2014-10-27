@@ -83,10 +83,10 @@ public class CabService {
         return cabRepository.findById(id);
     }
 
-    public List<Cab> search(float latitude, float longitude, int radius, int limit) {
+    public List<Cab> search(float latitude, float longitude, float radius, int limit) {
         //TODO: figure out how to use limit
         // figure out a way to get distance metrics.
-        List<Cab> cabList = cabRepository.search(latitude, longitude, radius);
+        List<Cab> cabList = cabRepository.search(latitude, longitude, radius, limit);
         return cabList;
     }
 
