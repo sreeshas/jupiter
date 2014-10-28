@@ -11,6 +11,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -84,9 +85,7 @@ public class CabService {
     }
 
     public List<Cab> search(float latitude, float longitude, float radius, int limit) {
-        //TODO: figure out how to use limit
-        // figure out a way to get distance metrics.
-        List<Cab> cabList = cabRepository.search(latitude, longitude, radius, limit);
+        List<Cab> cabList = cabRepository.search(latitude, longitude, radius, new PageRequest(0,limit));
         return cabList;
     }
 

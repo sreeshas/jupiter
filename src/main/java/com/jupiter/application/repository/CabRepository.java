@@ -4,6 +4,7 @@ import com.jupiter.application.domain.Cab;
 import com.jupiter.application.domain.User;
 import com.jupiter.application.web.rest.dto.CabDTO;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.geo.Circle;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Point;
@@ -21,6 +22,6 @@ public interface CabRepository extends MongoRepository<Cab, Long> {
     Cab findById(Long id);
 
     @Query(value = "{location :{ $nearSphere :{$geometry : {type : \"Point\", coordinates : [?1, ?0] }, $maxDistance :?2}}}")
-    List<Cab> search(float latitude, float longitude, float radius, int limit );
+    List<Cab> search(float latitude, float longitude, float radius, Pageable Page);
 
  }
