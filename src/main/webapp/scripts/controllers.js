@@ -3,6 +3,71 @@
 /* Controllers */
 
 jupiterApp.controller('MainController', function ($scope) {
+    var map;
+    var locationCircle;
+    var mapOptions;
+    var marker;
+    var image = 'images/cab.png';
+
+    function initialize() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(getPosition)
+        }
+
+    }
+
+    function placeMarker(location) {
+        console.log(location);
+        var marker1 = new google.maps.Marker({
+            position: location,
+            map: $scope.map,
+            icon: image,
+            title: "Latitude :" + location.lat() + " \nLongitude : "+location.lng()
+        });
+    }
+
+
+    function getPosition(position) {
+        mapOptions = {
+            zoom: 14,
+            center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+        };
+        $scope.map = new google.maps.Map(document.getElementById('map-canvas'),
+            mapOptions);
+        var circleOptions = {
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: $scope.map,
+            center: mapOptions.center,
+            radius: 200
+        }
+
+        //Add a circle around current location.
+        locationCircle = new google.maps.Circle(circleOptions);
+        //Add a point on current location
+         marker = new google.maps.Marker({
+            position: mapOptions.center,
+            map: $scope.map,
+            title: "Latitude :" + position.coords.latitude + " \nLongitude: "+position.coords.longitude
+
+        });
+
+        google.maps.event.addListener($scope.map, 'click', function(event) {
+            placeMarker(event.latLng);
+        });
+    }
+
+
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+//initialize();
+
+
+
     });
 
 jupiterApp.controller('AdminController', function ($scope) {
