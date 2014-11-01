@@ -6,7 +6,191 @@
             </div>
         </div>
         <div class="col-md-4">
-            <span class="hipster img-responsive img-rounded"></span>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation"><a href="#home" role="tab" data-toggle="tab">Nearest Cab</a></li>
+                <li role="presentation"><a href="#add" role="tab" data-toggle="tab">Update</a></li>
+                <li role="presentation"><a href="#find" role="tab" data-toggle="tab">Find</a></li>
+                <li role="presentation"><a href="#delete" role="tab" data-toggle="tab">Delete</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane" id="home">
+                    <!-- Search form -->
+                    <form class="form-horizontal">
+                        <fieldset>
+
+                            <!-- Find Cabs near you -->
+                            <legend></legend>
+                            <p>Find cabs near you</p>
+
+                            <!-- Text input-->
+                            <div class="control-group">
+                                <label class="control-label" for="flatitude">Latitude</label>
+                                <div class="controls">
+                                    <input id="flatitude" name="latitude" type="text" placeholder="" class="input-xlarge" required="">
+                                    <p class="help-block">Current Latitude</p>
+                                </div>
+                            </div>
+
+                            <!-- Text input-->
+                            <div class="control-group">
+                                <label class="control-label" for="longitude">Longitude</label>
+                                <div class="controls">
+                                    <input id="longitude" name="longitude" type="text" placeholder="" class="input-xlarge" required="">
+                                    <p class="help-block">Current Longitude</p>
+                                </div>
+                            </div>
+
+                            <!-- Button Drop Down -->
+                            <div class="control-group">
+                                <label class="control-label" for="buttondropdown">Radius</label>
+                                <div class="controls">
+                                    <div class="input-append">
+                                        <input id="buttondropdown" name="buttondropdown" class="input-xlarge" placeholder="radius" type="text" required="">
+                                        <div class="btn-group">
+                                            <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                                Increment
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Text input-->
+                            <div class="control-group">
+                                <label class="control-label" for="limit">Limit</label>
+                                <div class="controls">
+                                    <input id="limit" name="limit" type="text" placeholder="8" class="input-xlarge">
+                                    <p class="help-block">Result Limit</p>
+                                </div>
+                            </div>
+
+                            <!-- Button -->
+                            <div class="control-group">
+                                <label class="control-label" for="fsearch"></label>
+                                <div class="controls">
+                                    <button id="fsearch" name="search" class="btn btn-primary">Search</button>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </form>
+
+                </div>
+                <div role="tabpanel" class="tab-pane" id="add">
+                    <form class="form-horizontal">
+                        <fieldset>
+
+                            <!-- Add/Update a cab position -->
+                            <legend></legend>
+                            <p>Add or Update a cab</p>
+
+                            <!-- Text input-->
+                            <div class="control-group">
+                                <label class="control-label" for="id">ID</label>
+                                <div class="controls">
+                                    <input id="addupdateid" name="id" type="text" placeholder="Id of the cab" class="input-xlarge" required="">
+                                    <p class="help-block">Unique Id of the cab</p>
+                                </div>
+                            </div>
+
+                            <!-- Text input-->
+                            <div class="control-group">
+                                <label class="control-label" for="alatitude">Latitude</label>
+                                <div class="controls">
+                                    <input id="alatitude" name="latitude" type="text" placeholder="" class="input-xlarge" required="">
+                                    <p class="help-block">cab latitude</p>
+                                </div>
+                            </div>
+
+                            <!-- Text input-->
+                            <div class="control-group">
+                                <label class="control-label" for="longitude">Longitude</label>
+                                <div class="controls">
+                                    <input id="alongitude" name="longitude" type="text" placeholder="" class="input-xlarge" required="">
+                                    <p class="help-block">cab longitude</p>
+                                </div>
+                            </div>
+
+                            <!-- Button -->
+                            <div class="control-group">
+                                <label class="control-label" for="addupdate"></label>
+                                <div class="controls">
+                                    <button id="addupdate" name="addupdate" class="btn btn-primary">Add / Update</button>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </form>
+
+                </div>
+                <div role="tabpanel" class="tab-pane" id="find">
+                    <form class="form-horizontal">
+                            <!-- Search -->
+                            <legend></legend>
+                            <p> Find cab details</p>
+
+                            <!-- Text input-->
+                            <div class="control-group">
+                                <label class="control-label" for="id">ID</label>
+                                <div class="controls">
+                                    <input id="searchid" name="id" type="text" placeholder="Id of the cab" class="input-xlarge" required="">
+                                    <p class="help-block">Unique Id of the cab</p>
+                                </div>
+                            </div>
+
+                            <!-- Button -->
+                            <div class="control-group">
+                                <label class="control-label" for="ssearch"></label>
+                                <div class="controls">
+                                    <button id="ssearch" name="search" class="btn btn-primary">Search</button>
+                                </div>
+                            </div>
+                    </form>
+
+                </div>
+                <div role="tabpanel" class="tab-pane" id="delete">
+                    <!-- Delete-->
+                    <form class="form-horizontal">
+                        <fieldset>
+
+                            <!-- Form Name -->
+                            <legend></legend>
+                            <p>Delete a cab</p>
+
+                            <!-- Text input-->
+                            <div class="control-group">
+                                <label class="control-label" for="id">ID</label>
+                                <div class="controls">
+                                    <input id="id" name="id" type="text" placeholder="Id of the cab" class="input-xlarge" required="">
+                                    <p class="help-block">Unique Id of the cab</p>
+                                </div>
+                            </div>
+
+                            <!-- Button -->
+                            <div class="control-group">
+                                <label class="control-label" for="search"></label>
+                                <div class="controls">
+                                    <button id="search" name="search" class="btn btn-danger">Delete</button>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </form>
+
+                </div>
+            </div>
+            <!--<span class="hipster img-responsive img-rounded"></span>-->
+            <!--<form>-->
+                <!--Radius<input type="text" name="radius"><br>-->
+                <!--Limit<input type="text" name="limit"><br>-->
+                <!--<button type="button">Search!</button>-->
+            <!--</form>-->
         </div>
     </div>
 </div>

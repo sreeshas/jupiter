@@ -100,6 +100,34 @@ jupiterApp
                         authorizedRoles: [USER_ROLES.admin]
                     }
                 })
+                .when('#/home', {
+                    templateUrl: 'views/main.html',
+                    controller: 'MainController',
+                    access: {
+                        authorizedRoles: [USER_ROLES.admin]
+                    }
+                })
+                .when('#/update', {
+                    templateUrl: 'views/main.html',
+                    controller: 'MainController',
+                    access: {
+                        authorizedRoles: [USER_ROLES.admin]
+                    }
+                })
+                .when('#/find', {
+                    templateUrl: 'views/main.html',
+                    controller: 'MainController',
+                    access: {
+                        authorizedRoles: [USER_ROLES.admin]
+                    }
+                })
+                .when('#/delete', {
+                    templateUrl: 'views/main.html',
+                    controller: 'MainController',
+                    access: {
+                        authorizedRoles: [USER_ROLES.admin]
+                    }
+                })
                 .otherwise({
                     templateUrl: 'views/main.html',
                     controller: 'MainController',

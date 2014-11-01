@@ -2,12 +2,29 @@
 
 /* Controllers */
 
-jupiterApp.controller('MainController', function ($scope) {
+jupiterApp.controller('MainController', function ($scope, $http) {
     var map;
     var locationCircle;
     var mapOptions;
     var marker;
-    var image = 'images/cab.png';
+    var image = 'images/cab.png'; //cab image.
+
+    initialize();
+
+    function getData() {
+        $http.get('/cabs?latitude=37.39715&longitude=-122.02412&limit=5&radius=80000').
+            success(function(data, status, headers, config) {
+
+                data.forEach(function(entry) {
+                    addCab(entry);
+                });
+            }).
+            error(function(data, status, headers, config) {
+                alert(data);
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+            });
+    }
 
     function initialize() {
         if (navigator.geolocation) {
@@ -58,15 +75,23 @@ jupiterApp.controller('MainController', function ($scope) {
         google.maps.event.addListener($scope.map, 'click', function(event) {
             placeMarker(event.latLng);
         });
-    }
 
+        getData();
+
+
+    }
 
 
     google.maps.event.addDomListener(window, 'load', initialize);
 
-//initialize();
-
-
+    function addCab(data){
+        var cab = new google.maps.Marker({
+            position: new google.maps.LatLng(data.latitude,data.longitude),
+            map: $scope.map,
+            icon: image,
+            title: "Latitude :" + data.latitude + " \nLongitude : "+data.longitude
+        });
+    }
 
     });
 
