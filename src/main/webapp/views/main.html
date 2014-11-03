@@ -3,21 +3,42 @@
 
         <div class="col-md-8">
             <div id="map-canvas" class="hipstermap">
+                <p>Google maps loading....</p>
             </div>
         </div>
         <div class="col-md-4">
             <!-- Nav tabs -->
+            <!--<ul class="nav nav-tabs" role="tablist">-->
+                <!--<li role="presentation">-->
+                    <!--<button id="searchbtn" name="search" class="btn btn-primary"-->
+                            <!--ng-click="searchbuttonClicked()" ng-model="searchCab">Search</button>-->
+                <!--</li>-->
+                <!--<li role="presentation"><button id="updatebtn" name="search" class="btn btn-primary">Update</button></li>-->
+                <!--<li role="presentation"><button id="findbtn" name="search" class="btn btn-primary">Find</button></li>-->
+                <!--<li role="presentation"><button id="deletebtn" name="search" class="btn btn-primary">Delete</button></li>-->
+            <!--</ul>-->
+
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation"><a href="#home" role="tab" data-toggle="tab">Nearest Cab</a></li>
-                <li role="presentation"><a href="#add" role="tab" data-toggle="tab">Update</a></li>
-                <li role="presentation"><a href="#find" role="tab" data-toggle="tab">Find</a></li>
-                <li role="presentation"><a href="#delete" role="tab" data-toggle="tab">Delete</a></li>
+                <li role="presentation">
+                    <button id="searchbtn" name="search" class="btn btn-primary"
+                            ng-click="searchButtonClicked()">Search</button>
+                </li>
+            <li role="presentation"><button id="updatebtn" name="search" class="btn btn-primary" ng-click="addOrUpdateButtonClicked()">Update</button></li>
+            <li role="presentation"><button id="findbtn" name="search" class="btn btn-primary" ng-click="findButtonClicked()">Find</button></li>
+            <li role="presentation"><button id="deletebtn" name="search" class="btn btn-primary" ng-click="deleteButtonClicked()">Delete</button></li>
             </ul>
+            <!--<div class="tab-content">-->
+                <!--<div ng-show="searchCab">Something1</div>-->
+                <!--<div ng-show="addOrUpdateCab">Something2</div>-->
+                <!--<div ng-show="findCab">Something3</div>-->
+                <!--<div ng-show="deleteCab">Something4</div>-->
+            <!--</div>-->
 
             <!-- Tab panes -->
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane" id="home">
+                <div ng-show="searchCab">
                     <!-- Search form -->
+
                     <form class="form-horizontal">
                         <fieldset>
 
@@ -82,7 +103,7 @@
                     </form>
 
                 </div>
-                <div role="tabpanel" class="tab-pane" id="add">
+                <div ng-show="addOrUpdateCab" >
                     <form class="form-horizontal">
                         <fieldset>
 
@@ -103,16 +124,20 @@
                             <div class="control-group">
                                 <label class="control-label" for="alatitude">Latitude</label>
                                 <div class="controls">
-                                    <input id="alatitude" name="latitude" type="text" placeholder="" class="input-xlarge" required="">
+                                    <input id="alatitude" name="latitude" type="text" placeholder="" class="input-xlarge" required="" ngModel="unsavedCab.latitude"
+                                            value="{{unsavedCab.latitude}}">
+
+                                    </input>
                                     <p class="help-block">cab latitude</p>
                                 </div>
                             </div>
 
                             <!-- Text input-->
                             <div class="control-group">
-                                <label class="control-label" for="longitude">Longitude</label>
+                                <label class="control-label" for="alongitude">Longitude</label>
                                 <div class="controls">
-                                    <input id="alongitude" name="longitude" type="text" placeholder="" class="input-xlarge" required="">
+                                    <input id="alongitude" name="longitude" type="text" placeholder="" class="input-xlarge" required="" ngModel="unsavedCab.longitude"
+                                           value="{{unsavedCab.longitude}}">
                                     <p class="help-block">cab longitude</p>
                                 </div>
                             </div>
@@ -129,7 +154,7 @@
                     </form>
 
                 </div>
-                <div role="tabpanel" class="tab-pane" id="find">
+                <div ng-show="findCab" >
                     <form class="form-horizontal">
                             <!-- Search -->
                             <legend></legend>
@@ -154,7 +179,7 @@
                     </form>
 
                 </div>
-                <div role="tabpanel" class="tab-pane" id="delete">
+                <div ng-show="deleteCab">
                     <!-- Delete-->
                     <form class="form-horizontal">
                         <fieldset>
@@ -186,11 +211,7 @@
                 </div>
             </div>
             <!--<span class="hipster img-responsive img-rounded"></span>-->
-            <!--<form>-->
-                <!--Radius<input type="text" name="radius"><br>-->
-                <!--Limit<input type="text" name="limit"><br>-->
-                <!--<button type="button">Search!</button>-->
-            <!--</form>-->
+
         </div>
     </div>
 </div>

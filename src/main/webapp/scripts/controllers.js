@@ -2,21 +2,62 @@
 
 /* Controllers */
 
-jupiterApp.controller('MainController', function ($scope, $http) {
+jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps) {
     var map;
-    var locationCircle;
-    var mapOptions;
-    var marker;
-    var image = 'images/cab.png'; //cab image.
+    $scope.unsavedCab = {};
+    $scope.addOrUpdateCab = false;
+    $scope.searchCab=true;
+    $scope.findCab=false;
+    $scope.deleteCab=false;
 
-    initialize();
+    function setup() {
+        var initializedMap = GoogleMaps.getMap();
+        if ( initializedMap == null) {
+            initializeMap();
+        } else {
+            //TODO:
+            //Figure out the best way to swap out divs
+            //It is not a best practice to manipulate dom in controller.
+            map = initializedMap;
+            $('#map-canvas').append(map.getDiv());
+        }
+
+    }
+
+    $scope.searchButtonClicked = function(option) {
+       resetView();
+       $scope.searchCab= true;
+    }
+    $scope.findButtonClicked = function(option) {
+        resetView();
+        $scope.findCab= true;
+    }
+    $scope.addOrUpdateButtonClicked = function(option) {
+        resetView();
+        $scope.addOrUpdateCab= true;
+    }
+    $scope.deleteButtonClicked = function(option) {
+        resetView();
+        $scope.deleteCab= true;
+    }
+
+
+
+    function resetView(){
+        $scope.addOrUpdateCab = false;
+        $scope.searchCab=false;
+        $scope.findCab=false;
+        $scope.deleteCab=false;
+    }
+
+    setup();
 
     function getData() {
         $http.get('/cabs?latitude=37.39715&longitude=-122.02412&limit=5&radius=80000').
             success(function(data, status, headers, config) {
 
                 data.forEach(function(entry) {
-                    addCab(entry);
+                    GoogleMaps.addSavedCabOnMap(entry);
                 });
             }).
             error(function(data, status, headers, config) {
@@ -26,30 +67,18 @@ jupiterApp.controller('MainController', function ($scope, $http) {
             });
     }
 
-    function initialize() {
+    function initializeMap() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(getPosition)
+            navigator.geolocation.getCurrentPosition(onCurrentPositionResult)
         }
-
     }
 
-    function placeMarker(location) {
-        console.log(location);
-        var marker1 = new google.maps.Marker({
-            position: location,
-            map: $scope.map,
-            icon: image,
-            title: "Latitude :" + location.lat() + " \nLongitude : "+location.lng()
-        });
-    }
-
-
-    function getPosition(position) {
-        mapOptions = {
+    function onCurrentPositionResult(position) {
+        var mapOptions = {
             zoom: 14,
             center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
         };
-        $scope.map = new google.maps.Map(document.getElementById('map-canvas'),
+        map = new google.maps.Map(document.getElementById('map-canvas'),
             mapOptions);
         var circleOptions = {
             strokeColor: '#FF0000',
@@ -57,41 +86,41 @@ jupiterApp.controller('MainController', function ($scope, $http) {
             strokeWeight: 2,
             fillColor: '#FF0000',
             fillOpacity: 0.35,
-            map: $scope.map,
+            map: map,
             center: mapOptions.center,
             radius: 200
         }
-
+        GoogleMaps.setMapOptions(mapOptions);
+        GoogleMaps.setCircleOptions(circleOptions);
+        GoogleMaps.addMap(map);
         //Add a circle around current location.
-        locationCircle = new google.maps.Circle(circleOptions);
+        var locationCircle = new google.maps.Circle(circleOptions);
+        GoogleMaps.setLocationCircle(locationCircle);
         //Add a point on current location
-         marker = new google.maps.Marker({
+        var marker = new google.maps.Marker({
             position: mapOptions.center,
-            map: $scope.map,
+            map: map,
             title: "Latitude :" + position.coords.latitude + " \nLongitude: "+position.coords.longitude
 
         });
-
-        google.maps.event.addListener($scope.map, 'click', function(event) {
-            placeMarker(event.latLng);
+        GoogleMaps.setCurrentLocationMarker(marker);
+        google.maps.event.addListener(map, 'click', function(event) {
+            onMapClick(event.latLng);
         });
-
         getData();
 
-
     }
 
+    //google.maps.event.addDomListener(window, 'load', initializeMap);
 
-    google.maps.event.addDomListener(window, 'load', initialize);
+    function onMapClick(location) {
 
-    function addCab(data){
-        var cab = new google.maps.Marker({
-            position: new google.maps.LatLng(data.latitude,data.longitude),
-            map: $scope.map,
-            icon: image,
-            title: "Latitude :" + data.latitude + " \nLongitude : "+data.longitude
-        });
+        $scope.unsavedCab.latitude = location.lat();
+        $scope.unsavedCab.longitude = location.lng();
+        $scope.addOrUpdateButtonClicked();
+        $scope.$apply();
     }
+
 
     });
 

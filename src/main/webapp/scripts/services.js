@@ -1,6 +1,109 @@
 'use strict';
 
 /* Services */
+jupiterApp.factory('GoogleMaps', function ($http) {
+    var map;
+    var currentLongitude;
+    var currentLatitude;
+    var mapOptions;
+    var circleOptions;
+    var locationCircle;
+    var currentLocationMarker;
+    var cabImage = 'images/cab.png'; //cab image.
+    var unsavedCabImage = 'images/unsavedcab.png'
+    var currentUnsavedCab;
+
+
+    function addUnSavedCabOnMap(location) {
+         if (currentUnsavedCab) {
+             currentUnsavedCab.setMap(null);
+         }
+         currentUnsavedCab = new google.maps.Marker({
+            position: location,
+            map: map,
+            icon: unsavedCabImage,
+            title: "Latitude :" + location.lat() + " \nLongitude : "+location.lng()
+        });
+    }
+
+    function addSavedCabOnMap(data){
+        var cab = new google.maps.Marker({
+            position: new google.maps.LatLng(data.latitude,data.longitude),
+            map: map,
+            icon: cabImage,
+            title: "Latitude :" + data.latitude + " \nLongitude : "+data.longitude
+        });
+    }
+
+
+    function addMap(initializedMap) {
+        map = initializedMap;
+        google.maps.event.addListener(map, 'click', function(event) {
+            addUnSavedCabOnMap(event.latLng);
+        });
+    }
+    function getMap() {
+        return map;
+    }
+
+    function getCurrentLatitude(){
+        return currentLatitude;
+    }
+
+    function getCurrentLongitude(){
+        return  currentLongitude;
+    }
+
+    function setCurrentLongitude(longitude){
+        currentLongitude = longitude;
+    }
+
+    function setCurrentLatitude(latitude){
+        currentLatitude = latitude;
+    }
+
+    function getMapOptions() {
+        return mapOptions;
+    }
+
+    function setMapOptions(newMapOptions){
+        mapOptions = newMapOptions;
+    }
+    function getCircleOptions() {
+        return circleOptions;
+    }
+    function setCircleOptions(newCircleOptions) {
+        circleOptions = newCircleOptions;
+    }
+    function setLocationCircle(newLocationCircle){
+        locationCircle = newLocationCircle;
+    }
+    function getLocationCircle(){
+        return locationCircle;
+    }
+    function getCurrentLocationMarker(){
+        return currentLocationMarker;
+    }
+    function setCurrentLocationMarker(locationMarker){
+        currentLocationMarker = locationMarker
+    }
+    return {
+        addMap: addMap,
+        getMap: getMap,
+        setMapOptions: setMapOptions,
+        getMapOptions: getMapOptions,
+        setCurrentLatitude: setCurrentLatitude,
+        setCurrentLongitude: setCurrentLongitude,
+        getCircleOptions: getCircleOptions,
+        setCircleOptions: setCircleOptions,
+        getLocationCircle: getLocationCircle,
+        setLocationCircle: setLocationCircle,
+        getCurrentLocationMarker: getCurrentLocationMarker,
+        setCurrentLocationMarker: setCurrentLocationMarker,
+        addSavedCabOnMap: addSavedCabOnMap
+
+    }
+});
 
 jupiterApp.factory('LanguageService', function ($http, $translate, LANGUAGES) {
         return {
