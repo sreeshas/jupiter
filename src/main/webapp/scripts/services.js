@@ -105,6 +105,15 @@ jupiterApp.factory('GoogleMaps', function ($http) {
     }
 });
 
+jupiterApp.factory('CabService', function ($http) {
+
+    function find(id) {
+        return $http.get('/cabs/'+id);
+    }
+    return {
+        find: find
+    }
+});
 jupiterApp.factory('LanguageService', function ($http, $translate, LANGUAGES) {
         return {
             getBy: function(language) {

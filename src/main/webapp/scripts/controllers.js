@@ -2,13 +2,16 @@
 
 /* Controllers */
 
-jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps) {
+jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, CabService) {
     var map;
     $scope.unsavedCab = {};
     $scope.addOrUpdateCab = false;
     $scope.searchCab=true;
     $scope.findCab=false;
     $scope.deleteCab=false;
+    $scope.alerts = [
+
+    ];
 
 
 
@@ -27,6 +30,20 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps) {
     $scope.deleteButtonClicked = function(option) {
         resetView();
         $scope.deleteCab=true;
+    }
+
+    $scope.onFind = function(id) {
+        CabService.find(id).
+            success(function(data, status, headers, config) {
+
+                $scope.alerts.push({ type: 'success', msg: 'ID : ' +data.id + '\n Latitude: '+ data.latitude+ ' \nLongitude '+ data.longitude });
+
+            }).
+            error(function(data, status, headers, config) {
+                alert(data);
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+            });
     }
 
     function resetView(){
