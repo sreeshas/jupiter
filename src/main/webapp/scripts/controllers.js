@@ -10,6 +10,32 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps) {
     $scope.findCab=false;
     $scope.deleteCab=false;
 
+
+
+    $scope.searchButtonClicked = function(option) {
+       resetView();
+       $scope.searchCab=true;
+    }
+    $scope.findButtonClicked = function(option) {
+        resetView();
+        $scope.findCab=true;
+    }
+    $scope.addOrUpdateButtonClicked = function(option) {
+        resetView();
+        $scope.addOrUpdateCab=true;
+    }
+    $scope.deleteButtonClicked = function(option) {
+        resetView();
+        $scope.deleteCab=true;
+    }
+
+    function resetView(){
+        $scope.addOrUpdateCab = false;
+        $scope.searchCab=false;
+        $scope.findCab=false;
+        $scope.deleteCab=false;
+    }
+
     function setup() {
         var initializedMap = GoogleMaps.getMap();
         if ( initializedMap == null) {
@@ -21,56 +47,23 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps) {
             map = initializedMap;
             $('#map-canvas').append(map.getDiv());
         }
-
     }
-
-    $scope.searchButtonClicked = function(option) {
-       resetView();
-       $scope.searchCab= true;
-    }
-    $scope.findButtonClicked = function(option) {
-        resetView();
-        $scope.findCab= true;
-    }
-    $scope.addOrUpdateButtonClicked = function(option) {
-        resetView();
-        $scope.addOrUpdateCab= true;
-    }
-    $scope.deleteButtonClicked = function(option) {
-        resetView();
-        $scope.deleteCab= true;
-    }
-
-
-
-    function resetView(){
-        $scope.addOrUpdateCab = false;
-        $scope.searchCab=false;
-        $scope.findCab=false;
-        $scope.deleteCab=false;
-    }
-
-    setup();
 
     function getData() {
+
         $http.get('/cabs?latitude=37.39715&longitude=-122.02412&limit=5&radius=80000').
             success(function(data, status, headers, config) {
 
                 data.forEach(function(entry) {
                     GoogleMaps.addSavedCabOnMap(entry);
                 });
+
             }).
             error(function(data, status, headers, config) {
                 alert(data);
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
             });
-    }
-
-    function initializeMap() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(onCurrentPositionResult)
-        }
     }
 
     function onCurrentPositionResult(position) {
@@ -110,16 +103,26 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps) {
         getData();
 
     }
-
-    //google.maps.event.addDomListener(window, 'load', initializeMap);
+    function initializeMap() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(onCurrentPositionResult)
+        }
+    }
 
     function onMapClick(location) {
-
-        $scope.unsavedCab.latitude = location.lat();
-        $scope.unsavedCab.longitude = location.lng();
-        $scope.addOrUpdateButtonClicked();
-        $scope.$apply();
+        $scope.$apply(function(){
+            resetView();
+            $scope.addOrUpdateCab= true;
+            $scope.unsavedCab.latitude = location.lat();
+            $scope.unsavedCab.longitude = location.lng();
+        });
     }
+
+
+    //setup();
+    google.maps.event.addDomListener(window, 'load', setup);
+
+
 
 
     });
