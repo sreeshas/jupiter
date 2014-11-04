@@ -9,7 +9,7 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
     $scope.searchCab=true;
     $scope.findCab=false;
     $scope.deleteCab=false;
-    $scope.alerts = [
+    $scope.result = [
 
     ];
 
@@ -32,17 +32,48 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
         $scope.deleteCab=true;
     }
 
-    $scope.onFind = function(id) {
-        CabService.find(id).
+    $scope.onFind = function() {
+        if (!$scope.findCabId) {
+           $scope.result = {error: "Cab Id cannot be empty"};
+           return;
+        }
+        $scope.result = {};
+        CabService.find($scope.findCabId).
             success(function(data, status, headers, config) {
-
-                $scope.alerts.push({ type: 'success', msg: 'ID : ' +data.id + '\n Latitude: '+ data.latitude+ ' \nLongitude '+ data.longitude });
+                if (data) {
+                    $scope.result.findCab= { msg: 'ID : ' + data.id + ' Latitude: ' + data.latitude + ' Longitude ' + data.longitude};
+                } else {
+                    $scope.result.findCab= {error:"Cab " +$scope.findCabId+" not found"};
+                }
 
             }).
             error(function(data, status, headers, config) {
                 alert(data);
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
+            });
+    }
+
+    $scope.onDelete= function() {
+        if (!$scope.deleteCabId) {
+            $scope.result = {error: "Cab Id cannot be empty"};
+            return;
+        }
+        $scope.result = {};
+        CabService.deleteCab($scope.deleteCabId).
+            success(function(data, status, headers, config) {
+                if (status == 200) {
+                    $scope.result.deleteCab = { msg: "Successfully deleted Cab " + $scope.deleteCabId};
+                }
+
+            }).
+            error(function(data, status, headers, config) {
+
+                if (status == 404){
+                    $scope.result.deleteCab= {error:"Cab " +$scope.deleteCabId+" not found"};
+                } else {
+                    alert(status);
+                }
             });
     }
 

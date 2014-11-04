@@ -110,8 +110,13 @@ jupiterApp.factory('CabService', function ($http) {
     function find(id) {
         return $http.get('/cabs/'+id);
     }
+
+    function deleteCab(id) {
+        return $http.delete('/cabs/'+id);
+    }
     return {
-        find: find
+        find: find,
+        deleteCab: deleteCab
     }
 });
 jupiterApp.factory('LanguageService', function ($http, $translate, LANGUAGES) {

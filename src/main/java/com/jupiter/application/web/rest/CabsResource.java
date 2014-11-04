@@ -92,7 +92,12 @@ public class CabsResource {
             method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteCab(@Valid @PathVariable long cab_id){
         log.debug(" Requested to delete a cab");
-        cabService.deleteCab(cab_id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        boolean status = cabService.deleteCab(cab_id);
+        if (status) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 }

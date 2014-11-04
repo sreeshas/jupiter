@@ -164,7 +164,7 @@
                             <div class="control-group">
                                 <label class="control-label" for="id">ID</label>
                                 <div class="controls">
-                                    <input id="searchid" name="id" type="text" placeholder="Id of the cab" class="input-xlarge" required="">
+                                    <input id="searchid" name="id" type="text" placeholder="Id of the cab" class="input-xlarge" required="" ng-model="findCabId">
                                     <p class="help-block">Unique Id of the cab</p>
                                 </div>
                             </div>
@@ -173,11 +173,12 @@
                             <div class="control-group">
                                 <label class="control-label" for="ssearch"></label>
                                 <div class="controls">
-                                    <button id="ssearch" name="search" class="btn btn-primary" ng-click="onFind(2)">Search</button>
+                                    <button id="ssearch" name="search" class="btn btn-primary" ng-click="onFind()">Search</button>
                                 </div>
                             </div>
-                            <div>
-                                <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+                            <div ng-show="result.findCab">
+                                <div class="alert alert-success" role="alert" ng-show="result.findCab.msg">{{result.findCab.msg}}</div>
+                                <div class="alert alert-danger" role="alert" ng-show="result.findCab.error">{{result.findCab.error}}</div>
                             </div>
                     </form>
 
@@ -195,7 +196,7 @@
                             <div class="control-group">
                                 <label class="control-label" for="id">ID</label>
                                 <div class="controls">
-                                    <input id="id" name="id" type="text" placeholder="Id of the cab" class="input-xlarge" required="">
+                                    <input id="id" name="id" type="text" placeholder="Id of the cab" class="input-xlarge" required="" ng-model="deleteCabId">
                                     <p class="help-block">Unique Id of the cab</p>
                                 </div>
                             </div>
@@ -204,11 +205,16 @@
                             <div class="control-group">
                                 <label class="control-label" for="search"></label>
                                 <div class="controls">
-                                    <button id="search" name="search" class="btn btn-danger">Delete</button>
+                                    <button id="search" name="search" class="btn btn-danger" ng-click="onDelete()">Delete</button>
                                 </div>
                             </div>
 
                         </fieldset>
+
+                        <div ng-show="result.deleteCab">
+                            <div class="alert alert-success" role="alert" ng-show="result.deleteCab.msg">{{result.deleteCab.msg}}</div>
+                            <div class="alert alert-danger" role="alert" ng-show="result.deleteCab.error">{{result.deleteCab.error}}</div>
+                        </div>
                     </form>
 
                 </div>
