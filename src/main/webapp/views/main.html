@@ -8,16 +8,6 @@
         </div>
         <div class="col-md-4">
             <!-- Nav tabs -->
-            <!--<ul class="nav nav-tabs" role="tablist">-->
-                <!--<li role="presentation">-->
-                    <!--<button id="searchbtn" name="search" class="btn btn-primary"-->
-                            <!--ng-click="searchbuttonClicked()" ng-model="searchCab">Search</button>-->
-                <!--</li>-->
-                <!--<li role="presentation"><button id="updatebtn" name="search" class="btn btn-primary">Update</button></li>-->
-                <!--<li role="presentation"><button id="findbtn" name="search" class="btn btn-primary">Find</button></li>-->
-                <!--<li role="presentation"><button id="deletebtn" name="search" class="btn btn-primary">Delete</button></li>-->
-            <!--</ul>-->
-
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation">
                     <button id="searchbtn" name="search" class="btn btn-primary"
@@ -27,12 +17,6 @@
             <li role="presentation"><button id="findbtn" name="search" class="btn btn-primary" ng-click="findButtonClicked()">Find</button></li>
             <li role="presentation"><button id="deletebtn" name="search" class="btn btn-primary" ng-click="deleteButtonClicked()">Delete</button></li>
             </ul>
-            <!--<div class="tab-content">-->
-                <!--<div ng-show="searchCab">Something1</div>-->
-                <!--<div ng-show="addOrUpdateCab">Something2</div>-->
-                <!--<div ng-show="findCab">Something3</div>-->
-                <!--<div ng-show="deleteCab">Something4</div>-->
-            <!--</div>-->
 
             <!-- Tab panes -->
             <div class="tab-content">
@@ -50,7 +34,7 @@
                             <div class="control-group">
                                 <label class="control-label" for="flatitude">Latitude</label>
                                 <div class="controls">
-                                    <input id="flatitude" name="latitude" type="text" placeholder="" class="input-xlarge" required="">
+                                    <input id="flatitude" name="latitude" type="text" placeholder="" class="input-xlarge" required="" ng-model="currentLocation.latitude">
                                     <p class="help-block">Current Latitude</p>
                                 </div>
                             </div>
@@ -59,7 +43,7 @@
                             <div class="control-group">
                                 <label class="control-label" for="longitude">Longitude</label>
                                 <div class="controls">
-                                    <input id="longitude" name="longitude" type="text" placeholder="" class="input-xlarge" required="">
+                                    <input id="longitude" name="longitude" type="text" placeholder="" class="input-xlarge" required="" ng-model="currentLocation.longitude">
                                     <p class="help-block">Current Longitude</p>
                                 </div>
                             </div>
@@ -69,14 +53,11 @@
                                 <label class="control-label" for="buttondropdown">Radius</label>
                                 <div class="controls">
                                     <div class="input-append">
-                                        <input id="buttondropdown" name="buttondropdown" class="input-xlarge" placeholder="radius" type="text" required="">
+                                        <input id="buttondropdown" name="buttondropdown" class="input-xlarge" placeholder="radius" type="text" required="" ng-model="searchradius">
                                         <div class="btn-group">
-                                            <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                                Increment
-                                                <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                            </ul>
+
+                                            <button id="incr" name="incr" class="btn btn-primary" ng-click="incrementRadius()">Increase</button>
+                                            <button id="decr" name="decr" class="btn btn-primary" ng-click="decrementRadius()">Decrease</button>
                                         </div>
                                     </div>
                                 </div>
@@ -86,7 +67,7 @@
                             <div class="control-group">
                                 <label class="control-label" for="limit">Limit</label>
                                 <div class="controls">
-                                    <input id="limit" name="limit" type="text" placeholder="8" class="input-xlarge">
+                                    <input id="limit" name="limit" type="text" placeholder="8" class="input-xlarge" ng-model="searchlimit">
                                     <p class="help-block">Result Limit</p>
                                 </div>
                             </div>
@@ -95,7 +76,7 @@
                             <div class="control-group">
                                 <label class="control-label" for="fsearch"></label>
                                 <div class="controls">
-                                    <button id="fsearch" name="search" class="btn btn-primary">Search</button>
+                                    <button id="fsearch" name="search" class="btn btn-primary" ng-click="search()">Search</button>
                                 </div>
                             </div>
 
@@ -115,7 +96,7 @@
                             <div class="control-group">
                                 <label class="control-label" for="addupdateid">ID</label>
                                 <div class="controls">
-                                    <input id="addupdateid" name="id" type="text" placeholder="Id of the cab" class="input-xlarge" required="">
+                                    <input id="addupdateid" name="id" type="text" placeholder="Id of the cab" class="input-xlarge" required="" ng-model="unsavedCab.id">
                                     <p class="help-block">Unique Id of the cab</p>
                                 </div>
                             </div>
@@ -146,11 +127,15 @@
                             <div class="control-group">
                                 <label class="control-label" for="addupdate"></label>
                                 <div class="controls">
-                                    <button id="addupdate" name="addupdate" class="btn btn-primary">Add / Update</button>
+                                    <button id="addupdate" name="addupdate" class="btn btn-primary" ng-click="onAddUpdate()">Add / Update</button>
                                 </div>
                             </div>
 
                         </fieldset>
+                        <div ng-show="result.addUpdate">
+                            <div class="alert alert-success" role="alert" ng-show="result.addUpdate.msg">{{result.addUpdate.msg}}</div>
+                            <div class="alert alert-danger" role="alert" ng-show="result.addUpdate.error">{{result.addUpdate.error}}</div>
+                        </div>
                     </form>
 
                 </div>

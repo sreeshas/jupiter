@@ -12,7 +12,13 @@ jupiterApp.factory('GoogleMaps', function ($http) {
     var cabImage = 'images/cab.png'; //cab image.
     var unsavedCabImage = 'images/unsavedcab.png'
     var currentUnsavedCab;
+    var savedCabs = [];
 
+    function clearUnsavedCab(){
+        if (currentUnsavedCab) {
+            currentUnsavedCab.setMap(null);
+        }
+    }
 
     function addUnSavedCabOnMap(location) {
          if (currentUnsavedCab) {
@@ -33,6 +39,14 @@ jupiterApp.factory('GoogleMaps', function ($http) {
             icon: cabImage,
             title: "Latitude :" + data.latitude + " \nLongitude : "+data.longitude
         });
+        savedCabs.push(cab);
+    }
+
+    function clearSavedCabs(){
+        savedCabs.forEach(function(entry){
+            entry.setMap(null);
+        });
+        savedCabs = [];
     }
 
 
@@ -87,6 +101,19 @@ jupiterApp.factory('GoogleMaps', function ($http) {
     function setCurrentLocationMarker(locationMarker){
         currentLocationMarker = locationMarker
     }
+    function incrementRadius (amount){
+        circleOptions['radius'] = circleOptions['radius'] +  amount;
+        locationCircle.setMap(null);
+        locationCircle = new google.maps.Circle(circleOptions);
+
+    }
+    function decrementRadius (amount){
+        circleOptions['radius'] = circleOptions['radius'] -  amount;
+        locationCircle.setMap(null);
+        locationCircle = new google.maps.Circle(circleOptions);
+
+    }
+
     return {
         addMap: addMap,
         getMap: getMap,
@@ -100,12 +127,16 @@ jupiterApp.factory('GoogleMaps', function ($http) {
         setLocationCircle: setLocationCircle,
         getCurrentLocationMarker: getCurrentLocationMarker,
         setCurrentLocationMarker: setCurrentLocationMarker,
-        addSavedCabOnMap: addSavedCabOnMap
+        addSavedCabOnMap: addSavedCabOnMap,
+        clearUnsavedCab:clearUnsavedCab,
+        clearSavedCabs:clearSavedCabs,
+        incrementRadius: incrementRadius,
+        decrementRadius:decrementRadius
 
     }
 });
 
-jupiterApp.factory('CabService', function ($http) {
+jupiterApp.factory('CabService', function ($http, GoogleMaps) {
 
     function find(id) {
         return $http.get('/cabs/'+id);
@@ -114,9 +145,21 @@ jupiterApp.factory('CabService', function ($http) {
     function deleteCab(id) {
         return $http.delete('/cabs/'+id);
     }
+
+    function addOrUpdateCab(id, latitude, longitude){
+        GoogleMaps.clearUnsavedCab();
+        return $http.put('/cabs/'+id, {latitude: latitude, longitude: longitude});
+    }
+
+    function search(latitude, longitude, radius, limit){
+        //GoogleMaps.clearUnsavedCab();
+        return $http.get('/cabs/?latitude='+latitude+'&longitude='+longitude+'&radius='+radius+'&limit='+limit);
+    }
     return {
         find: find,
-        deleteCab: deleteCab
+        deleteCab: deleteCab,
+        addOrUpdateCab:addOrUpdateCab,
+        search:search
     }
 });
 jupiterApp.factory('LanguageService', function ($http, $translate, LANGUAGES) {
