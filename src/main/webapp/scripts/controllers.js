@@ -14,6 +14,7 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
     ];
     $scope.searchradius=50;
     $scope.searchlimit=10;
+    $scope.searchResults=[];
 
 
 
@@ -50,8 +51,6 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
             }).
             error(function(data, status, headers, config) {
                 alert(data);
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
             });
     }
     $scope.onAddUpdate = function() {
@@ -112,10 +111,11 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
         ).success(function(data, status, headers, config) {
 
                 //GoogleMaps.clearSavedCabs();
-                data.forEach(function(entry) {
-
-                     alert(entry);
-                });
+//                data.forEach(function(entry) {
+//
+//                     alert(entry);
+//                });
+                $scope.searchResults = data;
 
             }).
             error(function(data, status, headers, config) {
