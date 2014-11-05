@@ -16,22 +16,29 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
     $scope.searchlimit=10;
     $scope.searchResults=[];
 
-
+    function clearResults() {
+        $scope.result = [];
+        $scope.searchResults=[];
+    }
 
     $scope.searchButtonClicked = function(option) {
        resetView();
+       clearResults();
        $scope.searchCab=true;
     }
     $scope.findButtonClicked = function(option) {
         resetView();
+        clearResults();
         $scope.findCab=true;
     }
     $scope.addOrUpdateButtonClicked = function(option) {
         resetView();
+        clearResults();
         $scope.addOrUpdateCab=true;
     }
     $scope.deleteButtonClicked = function(option) {
         resetView();
+        clearResults();
         $scope.deleteCab=true;
     }
     $scope.onFind = function() {

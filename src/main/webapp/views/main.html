@@ -3,19 +3,16 @@
 
         <div class="col-md-8">
             <div id="map-canvas" class="hipstermap">
-                <p>Google maps loading....</p>
+                <p>Loading Google Maps....</p>
             </div>
         </div>
         <div class="col-md-4">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation">
-                    <button id="searchbtn" name="search" class="btn btn-primary"
-                            ng-click="searchButtonClicked()">Search</button>
-                </li>
-            <li role="presentation"><button id="updatebtn" name="search" class="btn btn-primary" ng-click="addOrUpdateButtonClicked()">Update</button></li>
-            <li role="presentation"><button id="findbtn" name="search" class="btn btn-primary" ng-click="findButtonClicked()">Find</button></li>
-            <li role="presentation"><button id="deletebtn" name="search" class="btn btn-primary" ng-click="deleteButtonClicked()">Delete</button></li>
+                <li role="presentation"><button id="searchbtn" name="search" class="btn btn-primary" ng-click="searchButtonClicked()">Search</button></li>
+                <li role="presentation"><button id="updatebtn" name="search" class="btn btn-primary" ng-click="addOrUpdateButtonClicked()">Update</button></li>
+                <li role="presentation"><button id="findbtn" name="search" class="btn btn-primary" ng-click="findButtonClicked()">Find</button></li>
+                <li role="presentation"><button id="deletebtn" name="search" class="btn btn-primary" ng-click="deleteButtonClicked()">Delete</button></li>
             </ul>
 
             <!-- Tab panes -->
@@ -132,10 +129,7 @@
                             </div>
 
                         </fieldset>
-                        <div ng-show="result.addUpdate">
-                            <div class="alert alert-success" role="alert" ng-show="result.addUpdate.msg">{{result.addUpdate.msg}}</div>
-                            <div class="alert alert-danger" role="alert" ng-show="result.addUpdate.error">{{result.addUpdate.error}}</div>
-                        </div>
+
                     </form>
 
                 </div>
@@ -161,10 +155,7 @@
                                     <button id="ssearch" name="search" class="btn btn-primary" ng-click="onFind()">Search</button>
                                 </div>
                             </div>
-                            <div ng-show="result.findCab">
-                                <div class="alert alert-success" role="alert" ng-show="result.findCab.msg">{{result.findCab.msg}}</div>
-                                <div class="alert alert-danger" role="alert" ng-show="result.findCab.error">{{result.findCab.error}}</div>
-                            </div>
+
                     </form>
 
                 </div>
@@ -196,15 +187,25 @@
 
                         </fieldset>
 
-                        <div ng-show="result.deleteCab">
-                            <div class="alert alert-success" role="alert" ng-show="result.deleteCab.msg">{{result.deleteCab.msg}}</div>
-                            <div class="alert alert-danger" role="alert" ng-show="result.deleteCab.error">{{result.deleteCab.error}}</div>
-                        </div>
+
                     </form>
 
                 </div>
             </div>
-            <!--<span class="hipster img-responsive img-rounded"></span>-->
+            <div id="opresults">
+                <div ng-show="result.addUpdate">
+                    <div class="alert alert-success" role="alert" ng-show="result.addUpdate.msg">{{result.addUpdate.msg}}</div>
+                    <div class="alert alert-danger" role="alert" ng-show="result.addUpdate.error">{{result.addUpdate.error}}</div>
+                </div>
+                <div ng-show="result.findCab">
+                    <div class="alert alert-success" role="alert" ng-show="result.findCab.msg">{{result.findCab.msg}}</div>
+                    <div class="alert alert-danger" role="alert" ng-show="result.findCab.error">{{result.findCab.error}}</div>
+                </div>
+                <div ng-show="result.deleteCab">
+                    <div class="alert alert-success" role="alert" ng-show="result.deleteCab.msg">{{result.deleteCab.msg}}</div>
+                    <div class="alert alert-danger" role="alert" ng-show="result.deleteCab.error">{{result.deleteCab.error}}</div>
+                </div>
+            </div>
 
         </div>
     </div>
