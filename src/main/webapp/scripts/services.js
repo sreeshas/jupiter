@@ -37,7 +37,7 @@ jupiterApp.factory('GoogleMaps', function ($http) {
             position: new google.maps.LatLng(data.latitude,data.longitude),
             map: map,
             icon: cabImage,
-            title: "Latitude :" + data.latitude + " \nLongitude : "+data.longitude
+            title: "ID: "+data.id+" \nLatitude : " + data.latitude + " \nLongitude : "+data.longitude
         });
         savedCabs.push(cab);
     }
@@ -101,6 +101,9 @@ jupiterApp.factory('GoogleMaps', function ($http) {
     function setCurrentLocationMarker(locationMarker){
         currentLocationMarker = locationMarker
     }
+    function panMap(latLng){
+        map.panTo(latLng)
+    }
     function incrementRadius (amount){
         circleOptions['radius'] = circleOptions['radius'] +  amount;
         locationCircle.setMap(null);
@@ -120,7 +123,9 @@ jupiterApp.factory('GoogleMaps', function ($http) {
         setMapOptions: setMapOptions,
         getMapOptions: getMapOptions,
         setCurrentLatitude: setCurrentLatitude,
+        getCurrentLatitude: getCurrentLatitude,
         setCurrentLongitude: setCurrentLongitude,
+        getCurrentLongitude: getCurrentLongitude,
         getCircleOptions: getCircleOptions,
         setCircleOptions: setCircleOptions,
         getLocationCircle: getLocationCircle,
@@ -131,7 +136,8 @@ jupiterApp.factory('GoogleMaps', function ($http) {
         clearUnsavedCab:clearUnsavedCab,
         clearSavedCabs:clearSavedCabs,
         incrementRadius: incrementRadius,
-        decrementRadius:decrementRadius
+        decrementRadius:decrementRadius,
+        panMap: panMap
 
     }
 });

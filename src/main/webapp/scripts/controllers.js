@@ -24,6 +24,8 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
     $scope.searchButtonClicked = function(option) {
        resetView();
        clearResults();
+       //Pan Map to center of current location.
+       GoogleMaps.panMap(new google.maps.LatLng(GoogleMaps.getCurrentLatitude(), GoogleMaps.getCurrentLongitude()));
        $scope.searchCab=true;
     }
     $scope.findButtonClicked = function(option) {
@@ -51,6 +53,9 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
             success(function(data, status, headers, config) {
                 if (data) {
                     $scope.result.findCab= { msg: 'ID : ' + data.id + ' Latitude: ' + data.latitude + ' Longitude ' + data.longitude};
+
+                    GoogleMaps.panMap(new google.maps.LatLng(data.latitude, data.longitude));
+
                 } else {
                     $scope.result.findCab= {error:"Cab " +$scope.findCabId+" not found"};
                 }
@@ -192,6 +197,8 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
             center: mapOptions.center,
             radius: 50
         }
+        GoogleMaps.setCurrentLatitude(position.coords.latitude);
+        GoogleMaps.setCurrentLongitude(position.coords.longitude);
         GoogleMaps.setMapOptions(mapOptions);
         GoogleMaps.setCircleOptions(circleOptions);
         GoogleMaps.addMap(map);
