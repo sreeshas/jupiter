@@ -45,11 +45,8 @@ public class CabsResource {
     @RequestMapping(value = "/cabs/{cab_id}",
             method = RequestMethod.PUT)
     public ResponseEntity<?> createOrUpdateCabLocation( @PathVariable long cab_id, @Valid @RequestBody CabDTO cabDTO){
-
-        log.debug(" Requested to create new Cab");
         cabService.createCab(cab_id, cabDTO.getLatitude(), cabDTO.getLongitude());
         return new ResponseEntity<>(HttpStatus.OK);
-
     }
 
     @RequestMapping(value = "/cabs/{cab_id}",

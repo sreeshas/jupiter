@@ -110,6 +110,22 @@ jupiterApp.factory('GoogleMaps', function ($http) {
         locationCircle = new google.maps.Circle(circleOptions);
 
     }
+    function setRadius(newRadius){
+       if(circleOptions) {
+           circleOptions['radius'] = parseInt(newRadius, 10);
+           locationCircle.setMap(null);
+           locationCircle = new google.maps.Circle(circleOptions);
+       }
+    }
+
+    function toggleCircle(){
+        if(locationCircle.getMap()) {
+            locationCircle.setMap(null);
+        } else {
+            locationCircle.setMap(map);
+        }
+
+    }
     function decrementRadius (amount){
         circleOptions['radius'] = circleOptions['radius'] -  amount;
         locationCircle.setMap(null);
@@ -135,9 +151,9 @@ jupiterApp.factory('GoogleMaps', function ($http) {
         addSavedCabOnMap: addSavedCabOnMap,
         clearUnsavedCab:clearUnsavedCab,
         clearSavedCabs:clearSavedCabs,
-        incrementRadius: incrementRadius,
-        decrementRadius:decrementRadius,
-        panMap: panMap
+        panMap: panMap,
+        setRadius:setRadius,
+        toggleCircle:toggleCircle
 
     }
 });

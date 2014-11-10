@@ -17,70 +17,64 @@
 
             <!-- Tab panes -->
             <div class="tab-content">
-                <div ng-show="searchCab">
-                    <!-- Search form -->
+            <div ng-show="searchCab">
+                <!--Search form-->
+                <form class="form-horizontal">
+                    <fieldset>
 
-                    <form class="form-horizontal">
-                        <fieldset>
+                        <!-- Find cabs near you. -->
+                        <legend></legend>
+                        <p> Find cabs near you</p>
 
-                            <!-- Find Cabs near you -->
-                            <legend></legend>
-                            <p>Find cabs near you</p>
-
-                            <!-- Text input-->
-                            <div class="control-group">
-                                <label class="control-label" for="flatitude">Latitude</label>
-                                <div class="controls">
-                                    <input id="flatitude" name="latitude" type="text" placeholder="" class="input-xlarge" required="" ng-model="currentLocation.latitude">
-                                    <p class="help-block">Current Latitude</p>
-                                </div>
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="flatitude">Latitude</label>
+                            <div class="col-md-6">
+                                <input id="flatitude" name="latitude" type="text" placeholder="" class="form-control input-md" required="" ng-model="currentLocation.latitude">
+                                <span class="help-block">Latitude of your current location</span>
                             </div>
+                        </div>
 
-                            <!-- Text input-->
-                            <div class="control-group">
-                                <label class="control-label" for="longitude">Longitude</label>
-                                <div class="controls">
-                                    <input id="longitude" name="longitude" type="text" placeholder="" class="input-xlarge" required="" ng-model="currentLocation.longitude">
-                                    <p class="help-block">Current Longitude</p>
-                                </div>
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="longitude">Longitude</label>
+                            <div class="col-md-6">
+                                <input id="longitude" name="longitude" type="text" placeholder="" class="form-control input-md" required="" ng-model="currentLocation.longitude">
+                                <span class="help-block">Longitude of your current location.</span>
                             </div>
+                        </div>
 
-                            <!-- Button Drop Down -->
-                            <div class="control-group">
-                                <label class="control-label" for="buttondropdown">Radius</label>
-                                <div class="controls">
-                                    <div class="input-append">
-                                        <input id="buttondropdown" name="buttondropdown" class="input-xlarge" placeholder="radius" type="text" required="" ng-model="searchradius">
-                                        <div class="btn-group">
-
-                                            <button id="incr" name="incr" class="btn btn-primary" ng-click="incrementRadius()">Increase</button>
-                                            <button id="decr" name="decr" class="btn btn-primary" ng-click="decrementRadius()">Decrease</button>
-                                        </div>
-                                    </div>
-                                </div>
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="searchRadius" >Search Radius</label>
+                            <div class="col-md-5">
+                                <input id="searchRadius" name="searchRadius" type="text" placeholder="" class="form-control input-md" required="" ng-model="searchradius" value="{{searchradius}}">
+                                <span class="help-block">Radius of the search (in meters)</span>
                             </div>
+                        </div>
 
-                            <!-- Text input-->
-                            <div class="control-group">
-                                <label class="control-label" for="limit">Limit</label>
-                                <div class="controls">
-                                    <input id="limit" name="limit" type="text" placeholder="8" class="input-xlarge" ng-model="searchlimit">
-                                    <p class="help-block">Result Limit</p>
-                                </div>
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="limit">Limit</label>
+                            <div class="col-md-4">
+                                <input id="limit" name="limit" type="text" placeholder="" class="form-control input-md"  ng-model="searchlimit">
+                                <span class="help-block">Limit on search results.</span>
                             </div>
+                        </div>
 
-                            <!-- Button -->
-                            <div class="control-group">
-                                <label class="control-label" for="fsearch"></label>
-                                <div class="controls">
-                                    <button id="fsearch" name="search" class="btn btn-primary" ng-click="search()">Search</button>
-                                </div>
+                        <!-- Button -->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="search"></label>
+                            <div class="col-md-4">
+                                <button id="search" name="search" class="btn btn-primary" ng-click="search()">Search</button>
                             </div>
+                        </div>
 
-                        </fieldset>
-                    </form>
+                    </fieldset>
+                </form>
 
-                </div>
+            </div>
+
                 <div ng-show="addOrUpdateCab" >
                     <form class="form-horizontal">
                         <fieldset>
@@ -192,7 +186,7 @@
 
                 </div>
             </div>
-            <div id="opresults">
+            <div id="opresults" >
                 <div ng-show="result.addUpdate">
                     <div class="alert alert-success" role="alert" ng-show="result.addUpdate.msg">{{result.addUpdate.msg}}</div>
                     <div class="alert alert-danger" role="alert" ng-show="result.addUpdate.error">{{result.addUpdate.error}}</div>
@@ -211,6 +205,7 @@
     </div>
     <div class="row" ng-show="searchResults">
     <p>Search Results</p>
+
     <table id="searchResults" class="table table-striped table-bordered" cellspacing="0" width="100%" >
     <thead>
     <tr>
@@ -237,5 +232,8 @@
     </tr>
     </tbody>
     </table>
+    </div>
+    <div class="row" ng-show="result.searchCab">
+        <div class="alert alert-danger" role="alert" ng-show="result.searchCab.error">{{result.searchCab.error}}</div>
     </div>
 </div>

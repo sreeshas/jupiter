@@ -6,7 +6,7 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
     var map;
     $scope.unsavedCab = {};
     $scope.addOrUpdateCab = false;
-    $scope.searchCab=true;
+    $scope.searchCab=false;
     $scope.findCab=false;
     $scope.deleteCab=false;
     $scope.result = [
@@ -15,6 +15,11 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
     $scope.searchradius=50;
     $scope.searchlimit=10;
     $scope.searchResults=[];
+
+    function reinitialize() {
+        GoogleMaps.clearSavedCabs();
+        GoogleMaps.clearUnsavedCab();
+    }
 
     function clearResults() {
         $scope.result = [];
@@ -27,23 +32,36 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
        //Pan Map to center of current location.
        GoogleMaps.panMap(new google.maps.LatLng(GoogleMaps.getCurrentLatitude(), GoogleMaps.getCurrentLongitude()));
        $scope.searchCab=true;
+        if (!GoogleMaps.getLocationCircle().getMap()){
+            GoogleMaps.toggleCircle();
+        }
     }
     $scope.findButtonClicked = function(option) {
         resetView();
         clearResults();
         $scope.findCab=true;
+        if (GoogleMaps.getLocationCircle().getMap()){
+            GoogleMaps.toggleCircle();
+        }
     }
     $scope.addOrUpdateButtonClicked = function(option) {
         resetView();
         clearResults();
         $scope.addOrUpdateCab=true;
+        if (GoogleMaps.getLocationCircle().getMap()){
+            GoogleMaps.toggleCircle();
+        }
     }
     $scope.deleteButtonClicked = function(option) {
         resetView();
         clearResults();
         $scope.deleteCab=true;
+        if (GoogleMaps.getLocationCircle().getMap()){
+            GoogleMaps.toggleCircle();
+        }
     }
     $scope.onFind = function() {
+        clearResults();
         if (!$scope.findCabId) {
            $scope.result = {error: "Cab Id cannot be empty"};
            return;
@@ -53,7 +71,6 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
             success(function(data, status, headers, config) {
                 if (data) {
                     $scope.result.findCab= { msg: 'ID : ' + data.id + ' Latitude: ' + data.latitude + ' Longitude ' + data.longitude};
-
                     GoogleMaps.panMap(new google.maps.LatLng(data.latitude, data.longitude));
 
                 } else {
@@ -66,13 +83,13 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
             });
     }
     $scope.onAddUpdate = function() {
+        clearResults();
         CabService.addOrUpdateCab($scope.unsavedCab.id, $scope.unsavedCab.latitude, $scope.unsavedCab.longitude).
             success(function(data, status, headers, config) {
-
                 if (status == 200) {
                     $scope.result.addUpdate = { msg: "Successfully saved Cab " + $scope.unsavedCab.id};
                 }
-                GoogleMaps.clearSavedCabs();
+                reinitialize();
                 getData();
 
             }).
@@ -86,6 +103,7 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
             });
     }
     $scope.onDelete= function() {
+        clearResults();
         if (!$scope.deleteCabId) {
             $scope.result = {error: "Cab Id cannot be empty"};
             return;
@@ -95,7 +113,10 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
             success(function(data, status, headers, config) {
                 if (status == 200) {
                     $scope.result.deleteCab = { msg: "Successfully deleted Cab " + $scope.deleteCabId};
+                    reinitialize();
+                    getData();
                 }
+
 
             }).
             error(function(data, status, headers, config) {
@@ -107,28 +128,26 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
                 }
             });
     }
-    $scope.incrementRadius = function() {
-        $scope.searchradius+=20;
-        GoogleMaps.incrementRadius(20);
-    }
-    $scope.decrementRadius = function() {
-        $scope.searchradius-=20;
-        GoogleMaps.decrementRadius(20);
-    }
+
+    //Listen for changes in searchradius and update the map.
+    $scope.$watch('searchradius', function(newValue, oldValue) {
+        GoogleMaps.setRadius(newValue);
+    });
+
     $scope.search = function() {
+        clearResults();
         CabService.search($scope.currentLocation.latitude,
                     $scope.currentLocation.longitude,
                     $scope.searchradius,
                     $scope.searchlimit
         ).success(function(data, status, headers, config) {
-
-                //GoogleMaps.clearSavedCabs();
-//                data.forEach(function(entry) {
-//
-//                     alert(entry);
-//                });
-                $scope.searchResults = data;
-
+                if (data.length >= 1) {
+                    $scope.searchResults = data;
+                } else {
+                    $scope.result.searchCab =  {
+                                error : "No Cabs found"
+                    }
+                }
             }).
             error(function(data, status, headers, config) {
                 alert(status);
@@ -157,6 +176,8 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
             map = initializedMap;
             $('#map-canvas').append(map.getDiv());
         }
+        $scope.searchCab=true;
+
     }
 
     function getData() {
@@ -171,8 +192,6 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
             }).
             error(function(data, status, headers, config) {
                 alert(data);
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
             });
     }
 
@@ -234,8 +253,6 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
         });
     }
 
-
-    //setup();
     google.maps.event.addDomListener(window, 'load', setup);
 
 

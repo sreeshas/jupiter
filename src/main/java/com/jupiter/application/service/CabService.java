@@ -58,6 +58,7 @@ public class CabService {
         Cab existingCab = cabRepository.findOne(id);
         existingCab.setLatitude(latitude);
         existingCab.setLongitude(longitude);
+        existingCab.setLocation(new Location(latitude, longitude));
         log.debug("Updating cab with id " + existingCab.getId());
         return cabRepository.save(existingCab);
     }
