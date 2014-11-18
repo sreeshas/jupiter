@@ -67,7 +67,7 @@ public class AccountResource {
     @RequestMapping(value = "/rest/register",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
+
     public ResponseEntity<?> registerAccount(@RequestBody UserDTO userDTO, HttpServletRequest request,
                                              HttpServletResponse response) {
         return Optional.ofNullable(userRepository.findOne(userDTO.getLogin()))
@@ -87,7 +87,7 @@ public class AccountResource {
     @RequestMapping(value = "/rest/activate",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
+
     public ResponseEntity<String> activateAccount(@RequestParam(value = "key") String key) {
         return Optional.ofNullable(userService.activateRegistration(key))
             .map(user -> new ResponseEntity<String>(
@@ -102,7 +102,7 @@ public class AccountResource {
     @RequestMapping(value = "/rest/authenticate",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
+
     public String isAuthenticated(HttpServletRequest request) {
         log.debug("REST request to check if the current user is authenticated");
         return request.getRemoteUser();
@@ -114,7 +114,7 @@ public class AccountResource {
     @RequestMapping(value = "/rest/account",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
+
     public ResponseEntity<UserDTO> getAccount() {
         return Optional.ofNullable(userService.getUserWithAuthorities())
             .map(user -> new ResponseEntity<>(
@@ -136,7 +136,7 @@ public class AccountResource {
     @RequestMapping(value = "/rest/account",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
+
     public void saveAccount(@RequestBody UserDTO userDTO) {
         userService.updateUserInformation(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail());
     }
@@ -147,7 +147,7 @@ public class AccountResource {
     @RequestMapping(value = "/rest/account/change_password",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
+
     public ResponseEntity<?> changePassword(@RequestBody String password) {
         if (StringUtils.isEmpty(password)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -162,7 +162,7 @@ public class AccountResource {
     @RequestMapping(value = "/rest/account/sessions",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
+
     public ResponseEntity<List<PersistentToken>> getCurrentSessions() {
         return Optional.ofNullable(userRepository.findOne(SecurityUtils.getCurrentLogin()))
             .map(user -> new ResponseEntity<>(
@@ -186,7 +186,7 @@ public class AccountResource {
      */
     @RequestMapping(value = "/rest/account/sessions/{series}",
             method = RequestMethod.DELETE)
-    @Timed
+
     public void invalidateSession(@PathVariable String series) throws UnsupportedEncodingException {
         String decodedSeries = URLDecoder.decode(series, "UTF-8");
         User user = userRepository.findOne(SecurityUtils.getCurrentLogin());

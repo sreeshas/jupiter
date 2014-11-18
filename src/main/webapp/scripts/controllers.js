@@ -9,9 +9,7 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
     $scope.searchCab=false;
     $scope.findCab=false;
     $scope.deleteCab=false;
-    $scope.result = [
-
-    ];
+    $scope.result = [];
     $scope.searchradius=50;
     $scope.searchlimit=10;
     $scope.searchResults=[];
@@ -253,10 +251,10 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
         });
     }
 
-    google.maps.event.addDomListener(window, 'load', setup);
 
-
-
+    //this does not work always and has weird load issues.
+    //google.maps.event.addDomListener(window, 'load', setup);
+    $(setup);
 
     });
 

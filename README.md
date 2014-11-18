@@ -10,3 +10,6 @@ if the cab is within the bounds of the map displayed, there is smooth animation 
 
 
 Search function
+
+
+db.cab.ensureIndex({location:"2dsphere"})

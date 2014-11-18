@@ -1,5 +1,6 @@
 package com.jupiter.application.web.rest;
 
+import com.codahale.metrics.annotation.Timed;
 import com.jupiter.application.Application;
 import com.jupiter.application.domain.Cab;
 import com.jupiter.application.service.CabService;
@@ -24,8 +25,6 @@ import java.util.List;
 /**
  * Rest controller for managing cabs.
  */
-
-
 @RestController
 public class CabsResource {
 
@@ -44,6 +43,7 @@ public class CabsResource {
      */
     @RequestMapping(value = "/cabs/{cab_id}",
             method = RequestMethod.PUT)
+    @Timed
     public ResponseEntity<?> createOrUpdateCabLocation( @PathVariable long cab_id, @Valid @RequestBody CabDTO cabDTO){
         cabService.createCab(cab_id, cabDTO.getLatitude(), cabDTO.getLongitude());
         return new ResponseEntity<>(HttpStatus.OK);
@@ -52,6 +52,7 @@ public class CabsResource {
     @RequestMapping(value = "/cabs/{cab_id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
     public ResponseEntity<Cab> getCabDetails(@Valid @PathVariable long cab_id) {
 
         log.debug(" Requested cab details");
@@ -63,6 +64,7 @@ public class CabsResource {
     @RequestMapping(value = "/cabs",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
     public ResponseEntity<List<CabDTO>> search(@Valid @RequestParam float latitude,
                                          @Valid @RequestParam float longitude,
                                          @Valid @RequestParam (required = false, defaultValue = "8") float radius,
@@ -87,6 +89,7 @@ public class CabsResource {
      */
     @RequestMapping(value = "/cabs/{cab_id}",
             method = RequestMethod.DELETE)
+    @Timed
     public ResponseEntity<?> deleteCab(@Valid @PathVariable long cab_id){
         log.debug(" Requested to delete a cab");
         boolean status = cabService.deleteCab(cab_id);
