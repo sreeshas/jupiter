@@ -22,12 +22,10 @@ public class Cab implements Serializable {
 
     @NotNull
     @Field("latitude")
-    @Indexed
     private float latitude;
 
     @NotNull
     @Field("longitude")
-    @Indexed
     private float longitude;
 
 

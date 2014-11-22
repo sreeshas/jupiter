@@ -33,9 +33,11 @@ public class CabsResource {
     @Inject
     private CabService cabService;
 
+    private CabDTOValidator cabDTOValidator = new CabDTOValidator();
+
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
-        binder.setValidator(new CabDTOValidator());
+        binder.setValidator(cabDTOValidator);
     }
 
     /**
