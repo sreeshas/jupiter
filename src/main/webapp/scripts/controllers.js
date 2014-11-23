@@ -6,12 +6,12 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
     $scope.unsavedCab = {};
     resetView();
     $scope.result = [];
-    $scope.searchradius=50; //default set to 50m
+    $scope.searchradius=50; //default set to 50 metres
     $scope.searchlimit=10;  //default set to 10 results.
     $scope.searchResults=[];
     $scope.currentLocation = {};
-    var latregex = new RegExp("^-?([1-8]?[0-9]\\.{1}\\d{1,50}$|90\\.{1}0{1,50}$)");
-    var longregex =  new RegExp("^-?((([1]?[0-7][0-9]|[1-9]?[0-9])\\.{1}\\d{1,50}$)|[1]?[1-8][0]\\.{1}0{1,50}$)");
+    var latregex = new RegExp("^-?([1-8]?[0-9]\\.{1}\\d{1,50}$|90\\.{1}0{1,50}$)"); //Regex for latitude validation
+    var longregex =  new RegExp("^-?((([1]?[0-7][0-9]|[1-9]?[0-9])\\.{1}\\d{1,50}$)|[1]?[1-8][0]\\.{1}0{1,50}$)"); //Regex for longitude validation
 
     //this does not work always and has weird load issues. Fix it later.
     //google.maps.event.addDomListener(window, 'load', setup);
@@ -32,6 +32,7 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
 
     function initializeMap() {
         if (navigator.geolocation) {
+            // Get user lat long from browser.
             navigator.geolocation.getCurrentPosition(onCurrentPositionResult)
         }
     }
@@ -136,7 +137,7 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
         if (GoogleMaps.getLocationCircle().getMap()){
             GoogleMaps.toggleCircle();
         }
-    }
+    };
     $scope.onFind = function() {
         clearResults();
         if (!$scope.findCabId) {
@@ -160,7 +161,7 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
             error(function(data, status, headers, config) {
                 alert(data);
             });
-    }
+    };
     $scope.onAddUpdate = function() {
         clearResults();
         CabService.addOrUpdateCab($scope.unsavedCab.id, $scope.unsavedCab.latitude, $scope.unsavedCab.longitude).
@@ -199,7 +200,7 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
                     alert(status);
                 }
             });
-    }
+    };
     $scope.search = function() {
         clearResults();
         CabService.search($scope.currentLocation.latitude,
@@ -226,19 +227,13 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
             });
     };
 
-
-
-
     function setOrUpdateCurrentLocationOnMap() {
         GoogleMaps.setCurrentLatitude($scope.currentLocation.latitude);
         GoogleMaps.setCurrentLongitude($scope.currentLocation.longitude);
         GoogleMaps.panMap(new google.maps.LatLng($scope.currentLocation.latitude, $scope.currentLocation.longitude));
         GoogleMaps.setMapOptions();
         GoogleMaps.setCurrentLocationMarker($scope.currentLocation);
-
     }
-
-
 
 });
 

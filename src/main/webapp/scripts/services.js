@@ -2,16 +2,16 @@
 
 /* Services */
 jupiterApp.factory('GoogleMaps', function ($http) {
-    var map;
-    var currentLongitude;
+    var map; /*Map of the application */
+    var currentLongitude;  //Current location of the user
     var currentLatitude;
     var mapOptions;
     var locationCircle;
-    var currentLocationMarker;
-    var cabImage = 'images/cab.png'; //cab image.
-    var unsavedCabImage = 'images/unsavedcab.png'
-    var currentUnsavedCab;
-    var savedCabs = [];
+    var currentLocationMarker; //Marker for current location.
+    var cabImage = 'images/cab.png'; //Used for cabs which are already saved in db.
+    var unsavedCabImage = 'images/unsavedcab.png'; //Used for cabs yet to be saved in db.
+    var currentUnsavedCab; //Represents unsaved cab.
+    var savedCabs = []; //List of saved cabs on the map.
 
     function addMap(mapCanvas) {
         map = new google.maps.Map(mapCanvas, getMapOptions());
