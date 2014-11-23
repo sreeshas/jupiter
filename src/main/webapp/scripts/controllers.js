@@ -59,6 +59,10 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
                 console.log("Invalid longitude value",$scope.currentLocation.longitude);
             }
         });
+        //Listen for changes in current radius and update the map.
+        $scope.$watch('searchradius', function(newValue, oldValue) {
+            GoogleMaps.setRadius(newValue);
+        });
 
         GoogleMaps.setCurrentLatitude($scope.currentLocation.latitude);
         GoogleMaps.setCurrentLongitude($scope.currentLocation.longitude);
@@ -206,6 +210,7 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
                 reinitialize();
                 if (data.length >= 1) {
                     $scope.searchResults = data;
+                    $scope.searchResults.count = data.length;
                     data.forEach(function(entry) {
                         GoogleMaps.addSavedCabOnMap(entry);
                     });
@@ -221,10 +226,7 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
             });
     };
 
-    //Listen for changes in current radius and update the map.
-    $scope.$watch('searchradius', function(newValue, oldValue) {
-        GoogleMaps.setRadius(newValue);
-    });
+
 
 
     function setOrUpdateCurrentLocationOnMap() {

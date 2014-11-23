@@ -90,7 +90,8 @@ jupiterApp.factory('GoogleMaps', function ($http) {
         }
         mapOptions = {
             zoom: 14,
-            center: new google.maps.LatLng(currentLatitude, currentLongitude)
+            center: new google.maps.LatLng(currentLatitude, currentLongitude),
+            map: map
         };
 
         setLocationCircle();
@@ -149,7 +150,9 @@ jupiterApp.factory('GoogleMaps', function ($http) {
                radius: parseInt(newRadius, 10)
            };
            locationCircle = new google.maps.Circle(circleOptions);
+            return;
        }
+        console.log("locationCircle not found");
 
     }
 
