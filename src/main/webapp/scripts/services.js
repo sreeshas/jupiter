@@ -6,7 +6,6 @@ jupiterApp.factory('GoogleMaps', function ($http) {
     var currentLongitude;
     var currentLatitude;
     var mapOptions;
-    var circleOptions;
     var locationCircle;
     var currentLocationMarker;
     var cabImage = 'images/cab.png'; //cab image.
@@ -14,32 +13,22 @@ jupiterApp.factory('GoogleMaps', function ($http) {
     var currentUnsavedCab;
     var savedCabs = [];
 
+    function addMap(mapCanvas) {
+        map = new google.maps.Map(mapCanvas, getMapOptions());
+        google.maps.event.addListener(map, 'click', function(event) {
+            addUnSavedCabOnMap(event.latLng);
+        });
+        setLocationCircle();
+    }
+
+    function getMap() {
+        return map;
+    }
+
     function clearUnsavedCab(){
         if (currentUnsavedCab) {
             currentUnsavedCab.setMap(null);
         }
-    }
-
-    function addUnSavedCabOnMap(location) {
-         if (currentUnsavedCab) {
-             currentUnsavedCab.setMap(null);
-         }
-         currentUnsavedCab = new google.maps.Marker({
-            position: location,
-            map: map,
-            icon: unsavedCabImage,
-            title: "Latitude :" + location.lat() + " \nLongitude : "+location.lng()
-        });
-    }
-
-    function addSavedCabOnMap(data){
-        var cab = new google.maps.Marker({
-            position: new google.maps.LatLng(data.latitude,data.longitude),
-            map: map,
-            icon: cabImage,
-            title: "ID: "+data.id+" \nLatitude : " + data.latitude + " \nLongitude : "+data.longitude
-        });
-        savedCabs.push(cab);
     }
 
     function clearSavedCabs(){
@@ -49,15 +38,26 @@ jupiterApp.factory('GoogleMaps', function ($http) {
         savedCabs = [];
     }
 
-
-    function addMap(initializedMap) {
-        map = initializedMap;
-        google.maps.event.addListener(map, 'click', function(event) {
-            addUnSavedCabOnMap(event.latLng);
+    function addUnSavedCabOnMap(cab) {
+         if (currentUnsavedCab) {
+             currentUnsavedCab.setMap(null);
+         }
+         currentUnsavedCab = new google.maps.Marker({
+            position: cab,
+            map: map,
+            icon: unsavedCabImage,
+            title: "Latitude :" + cab.lat() + " \nLongitude : "+cab.lng()
         });
     }
-    function getMap() {
-        return map;
+
+    function addSavedCabOnMap(cab){
+        var cab = new google.maps.Marker({
+            position: new google.maps.LatLng(cab.latitude,cab.longitude),
+            map: map,
+            icon: cabImage,
+            title: "ID: "+cab.id+" \nLatitude : " + cab.latitude + " \nLongitude : "+cab.longitude
+        });
+        savedCabs.push(cab);
     }
 
     function getCurrentLatitude(){
@@ -77,20 +77,42 @@ jupiterApp.factory('GoogleMaps', function ($http) {
     }
 
     function getMapOptions() {
+        if (mapOptions) {
+            return mapOptions;
+        }
+        setMapOptions();
         return mapOptions;
     }
 
     function setMapOptions(newMapOptions){
-        mapOptions = newMapOptions;
+        if (mapOptions) {
+            mapOptions.map = null;
+        }
+        mapOptions = {
+            zoom: 14,
+            center: new google.maps.LatLng(currentLatitude, currentLongitude)
+        };
+
+        setLocationCircle();
+
     }
-    function getCircleOptions() {
-        return circleOptions;
-    }
-    function setCircleOptions(newCircleOptions) {
-        circleOptions = newCircleOptions;
-    }
-    function setLocationCircle(newLocationCircle){
-        locationCircle = newLocationCircle;
+
+    function setLocationCircle(){
+        if (locationCircle){
+            locationCircle.setMap(null);
+            locationCircle = null;
+        }
+        var circleOptions = {
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: map,
+            center: mapOptions.center,
+            radius: 50
+        };
+        locationCircle = new google.maps.Circle(circleOptions);
     }
     function getLocationCircle(){
         return locationCircle;
@@ -98,24 +120,37 @@ jupiterApp.factory('GoogleMaps', function ($http) {
     function getCurrentLocationMarker(){
         return currentLocationMarker;
     }
-    function setCurrentLocationMarker(locationMarker){
-        currentLocationMarker = locationMarker
+    function setCurrentLocationMarker(currentLocation){
+        if (currentLocationMarker) {
+            currentLocationMarker.setMap(null);
+        }
+        currentLocationMarker = new google.maps.Marker({
+            position: mapOptions.center,
+            map: map,
+            title: "Latitude :" + currentLocation.latitude + " \nLongitude: "+currentLocation.longitude
+        });
     }
     function panMap(latLng){
         map.panTo(latLng)
     }
-    function incrementRadius (amount){
-        circleOptions['radius'] = circleOptions['radius'] +  amount;
-        locationCircle.setMap(null);
-        locationCircle = new google.maps.Circle(circleOptions);
 
-    }
     function setRadius(newRadius){
-       if(circleOptions) {
-           circleOptions['radius'] = parseInt(newRadius, 10);
+       if(locationCircle) {
            locationCircle.setMap(null);
+           locationCircle = null;
+           var circleOptions ={
+               strokeColor: '#FF0000',
+               strokeOpacity: 0.8,
+               strokeWeight: 2,
+               fillColor: '#FF0000',
+               fillOpacity: 0.35,
+               map: map,
+               center: mapOptions.center,
+               radius: parseInt(newRadius, 10)
+           };
            locationCircle = new google.maps.Circle(circleOptions);
        }
+
     }
 
     function toggleCircle(){
@@ -124,13 +159,12 @@ jupiterApp.factory('GoogleMaps', function ($http) {
         } else {
             locationCircle.setMap(map);
         }
-
     }
-    function decrementRadius (amount){
-        circleOptions['radius'] = circleOptions['radius'] -  amount;
-        locationCircle.setMap(null);
-        locationCircle = new google.maps.Circle(circleOptions);
 
+    function addClickEventListener(clickFunction) {
+        google.maps.event.addListener(getMap(), 'click', function(event) {
+            clickFunction(event.latLng);
+        });
     }
 
     return {
@@ -142,8 +176,6 @@ jupiterApp.factory('GoogleMaps', function ($http) {
         getCurrentLatitude: getCurrentLatitude,
         setCurrentLongitude: setCurrentLongitude,
         getCurrentLongitude: getCurrentLongitude,
-        getCircleOptions: getCircleOptions,
-        setCircleOptions: setCircleOptions,
         getLocationCircle: getLocationCircle,
         setLocationCircle: setLocationCircle,
         getCurrentLocationMarker: getCurrentLocationMarker,
@@ -153,12 +185,12 @@ jupiterApp.factory('GoogleMaps', function ($http) {
         clearSavedCabs:clearSavedCabs,
         panMap: panMap,
         setRadius:setRadius,
-        toggleCircle:toggleCircle
-
+        toggleCircle:toggleCircle,
+        addClickEventListener: addClickEventListener
     }
 });
 
-jupiterApp.factory('CabService', function ($http, GoogleMaps) {
+jupiterApp.factory('CabService', function ($http) {
 
     function find(id) {
         return $http.get('/cabs/'+id);
@@ -169,12 +201,10 @@ jupiterApp.factory('CabService', function ($http, GoogleMaps) {
     }
 
     function addOrUpdateCab(id, latitude, longitude){
-        GoogleMaps.clearUnsavedCab();
         return $http.put('/cabs/'+id, {latitude: latitude, longitude: longitude});
     }
 
     function search(latitude, longitude, radius, limit){
-        //GoogleMaps.clearUnsavedCab();
         return $http.get('/cabs/?latitude='+latitude+'&longitude='+longitude+'&radius='+radius+'&limit='+limit);
     }
     return {

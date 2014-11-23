@@ -30,7 +30,7 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="flatitude">Latitude</label>
                             <div class="col-md-6">
-                                <input id="flatitude" name="latitude" type="text" placeholder="" class="form-control input-md" required="" ng-model="currentLocation.latitude">
+                                <input id="flatitude" name="latitude" type="text" placeholder="" class="form-control input-md" required="" ng-model="currentLocation.latitude" value="{{currentLocation.latitude}}">
                                 <span class="help-block">Latitude of your current location</span>
                             </div>
                         </div>
@@ -39,7 +39,7 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="longitude">Longitude</label>
                             <div class="col-md-6">
-                                <input id="longitude" name="longitude" type="text" placeholder="" class="form-control input-md" required="" ng-model="currentLocation.longitude">
+                                <input id="longitude" name="longitude" type="text" placeholder="" class="form-control input-md" required="" ng-model="currentLocation.longitude" value="{{currentLocation.longitude}}">
                                 <span class="help-block">Longitude of your current location.</span>
                             </div>
                         </div>

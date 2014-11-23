@@ -19,7 +19,7 @@ public class CabDTOValidator implements Validator {
 
 
     /**
-     * Matches a latitude in the range of -90 to 90 degrees, with between 1 and 6 trailing decimal places.
+     * Matches a latitude in the range of -90 to 90 degrees, with between 1 and 10 trailing decimal places.
      *
      * Matches
      * -90.0 -77.284382 89.999999 1.0001
@@ -27,12 +27,12 @@ public class CabDTOValidator implements Validator {
      * -90.1 90.12345 91 -20.1234567 -90 90
      * @author Nick Floersch
      */
-    static String latitudeRegEx = "^-?([1-8]?[0-9]\\.{1}\\d{1,6}$|90\\.{1}0{1,6}$)";
+    static String latitudeRegEx = "^-?([1-8]?[0-9]\\.{1}\\d{1,10}$|90\\.{1}0{1,10}$)";
     static Pattern latPattern = Pattern.compile(latitudeRegEx);
 
 
     /**
-     * Matches a longitude in the range of -180 to 180 degrees, with between 1 and 6 trailing decimal places.
+     * Matches a longitude in the range of -180 to 180 degrees, with between 1 and 10 trailing decimal places.
      *
      * Matches
      * -180.0 180.0 -179.010293 1.123456 -45.012 0.12
@@ -41,7 +41,7 @@ public class CabDTOValidator implements Validator {
      * @author Nick Floersch
      */
 
-    static String longitudeRegEx = "^-?((([1]?[0-7][0-9]|[1-9]?[0-9])\\.{1}\\d{1,6}$)|[1]?[1-8][0]\\.{1}0{1,6}$)";
+    static String longitudeRegEx = "^-?((([1]?[0-7][0-9]|[1-9]?[0-9])\\.{1}\\d{1,10}$)|[1]?[1-8][0]\\.{1}0{1,10}$)";
     static Pattern longPattern = Pattern.compile(longitudeRegEx);
 
     @Override
