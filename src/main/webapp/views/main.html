@@ -57,7 +57,7 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="limit">Limit</label>
                             <div class="col-md-4">
-                                <input id="limit" name="limit" type="text" placeholder="" class="form-control input-md"  ng-model="searchlimit">
+                                <input id="limit" name="limit" type="text" placeholder="" class="form-control input-md"  ng-model="searchlimit" value="{{searchlimit}}">
                                 <span class="help-block">Limit on search results.</span>
                             </div>
                         </div>
@@ -77,6 +77,8 @@
 
                 <div ng-show="addOrUpdateCab" >
                     <form class="form-horizontal">
+                        <legend></legend>
+                        <p>Click on the map to select latitude and longitude.</p>
                         <fieldset>
 
                             <!-- Add/Update a cab position -->
@@ -96,7 +98,7 @@
                             <div class="control-group">
                                 <label class="control-label" for="alatitude">Latitude</label>
                                 <div class="controls">
-                                    <input id="alatitude" name="latitude" type="text" placeholder="" class="input-xlarge" required="" ngModel="unsavedCab.latitude"
+                                    <input id="alatitude" name="latitude" type="text" placeholder="" class="input-xlarge" required="" ng-model="unsavedCab.latitude"
                                             value="{{unsavedCab.latitude}}">
 
                                     </input>
@@ -108,7 +110,7 @@
                             <div class="control-group">
                                 <label class="control-label" for="alongitude">Longitude</label>
                                 <div class="controls">
-                                    <input id="alongitude" name="longitude" type="text" placeholder="" class="input-xlarge" required="" ngModel="unsavedCab.longitude"
+                                    <input id="alongitude" name="longitude" type="text" placeholder="" class="input-xlarge" required="" ng-model="unsavedCab.longitude"
                                            value="{{unsavedCab.longitude}}">
                                     <p class="help-block">cab longitude</p>
                                 </div>

@@ -6,8 +6,8 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
     $scope.unsavedCab = {};
     resetView();
     $scope.result = [];
-    $scope.searchradius=50; //default set to 50 metres
-    $scope.searchlimit=10;  //default set to 10 results.
+    $scope.searchradius = "50"; //default set to 50 metres
+    $scope.searchlimit = "10";  //default set to 10 results.
     $scope.searchResults=[];
     $scope.currentLocation = {};
     var latregex = new RegExp("^-?([1-8]?[0-9]\\.{1}\\d{1,50}$|90\\.{1}0{1,50}$)"); //Regex for latitude validation
@@ -102,7 +102,13 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
         $scope.deleteCab=false;
     }
 
+    function isNormalInteger(str) {
+        var n = ~~Number(str);
+        return String(n) === str && n > 0;
+    }
+
     $scope.searchButtonClicked = function(option) {
+
         resetView();
         reinitialize();
         $scope.searchCab=true;
@@ -140,6 +146,10 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
     };
     $scope.onFind = function() {
         clearResults();
+        if( !isNormalInteger($scope.findCabId)) {
+            $scope.result.findCab= {error:"Cab " +$scope.findCabId+" is not a valid ID."};
+            return;
+        }
         if (!$scope.findCabId) {
             $scope.result = {error: "Cab Id cannot be empty"};
             return;
@@ -164,6 +174,17 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
     };
     $scope.onAddUpdate = function() {
         clearResults();
+        //Validation
+        if (!isNormalInteger($scope.unsavedCab.id)) {
+            $scope.result.addUpdate= {error:"ID " +$scope.unsavedCab.id+" is not a valid ID"};
+            return;
+        } else if (!latregex.exec($scope.unsavedCab.latitude)) {
+            $scope.result.addUpdate= {error:"latitude " +$scope.unsavedCab.latitude+" is not valid latitude value"};
+            return;
+        } else if (!longregex.exec($scope.unsavedCab.longitude)) {
+            $scope.result.addUpdate= {error:"longitude " +$scope.unsavedCab.longitude+" is not valid longitude value"};
+            return;
+        }
         CabService.addOrUpdateCab($scope.unsavedCab.id, $scope.unsavedCab.latitude, $scope.unsavedCab.longitude).
             success(function(data, status, headers, config) {
                 if (status == 200) {
@@ -186,6 +207,10 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
             $scope.result = {error: "Cab Id cannot be empty"};
             return;
         }
+        if( !isNormalInteger($scope.deleteCabId)) {
+            $scope.result.findCab= {error:"Cab " +$scope.deleteCabId+" is not a valid ID."};
+            return;
+        }
         CabService.deleteCab($scope.deleteCabId).
             success(function(data, status, headers, config) {
                 if (status == 200) {
@@ -203,6 +228,19 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
     };
     $scope.search = function() {
         clearResults();
+        if ( !isNormalInteger($scope.searchradius)) {
+            $scope.result.searchCab= {error:"Search Radius " +$scope.searchradius+" is not a valid radius value."};
+            return;
+        } else if (!latregex.exec($scope.currentLocation.latitude)) {
+            $scope.result.searchCab= {error:"latitude " +$scope.currentLocation.latitude+" is not valid latitude value"};
+            return;
+        } else if (!longregex.exec($scope.currentLocation.longitude)) {
+            $scope.result.searchCab= {error:"longitude " +$scope.currentLocation.longitude+" is not valid longitude value"};
+            return;
+        } else if (!isNormalInteger($scope.searchlimit)) {
+            $scope.result.searchCab= {error:"Search Limit " +$scope.searchlimit+" is not a valid."};
+            return;
+        }
         CabService.search($scope.currentLocation.latitude,
             $scope.currentLocation.longitude,
             $scope.searchradius,
