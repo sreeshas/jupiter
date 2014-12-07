@@ -7,7 +7,7 @@ jupiterApp.controller('MainController', function ($scope, $http, GoogleMaps, Cab
     resetView();
     $scope.result = [];
     $scope.searchradius = "50"; //default set to 50 metres
-    $scope.searchlimit = "10";  //default set to 10 results.
+    $scope.searchlimit = "8";  //default set to 10 results.
     $scope.searchResults=[];
     $scope.currentLocation = {};
     var latregex = new RegExp("^-?([1-8]?[0-9]\\.{1}\\d{1,50}$|90\\.{1}0{1,50}$)"); //Regex for latitude validation
