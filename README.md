@@ -106,9 +106,7 @@ Jupiter is a cab management solution which has the following features
     <==Live Deployment:==>
     The project is deployed on Amazon EC2 t2.micro instance ( 1vCPU and 1GB RAM  *free tier limit*)
     on Microsoft 2008 server OS.
-    Jupiter is hosted at http://54.148.127.81:8080
-    Username: admin
-    Password: admin
+    
 
 
     <==Load Testing using JMeter (End-to-End):==>
